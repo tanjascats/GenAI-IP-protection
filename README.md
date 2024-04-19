@@ -15,6 +15,6 @@ This repository contains a collection of methods for intellectual property prote
 2023	Shan et al.	**Prompt-Specific Poisoning Attacks on Text-to-Image Generative Models** [paper](http://arxiv.org/abs/2310.13828)\
 2023	Chen et al.	**EditShield: Protecting Unauthorized Image Editing by Instruction-guided Diffusion Models** [paper](http://arxiv.org/abs/2311.12066)\
 2023	Liu et al.	**Toward Robust Imperceptible Perturbation against Unauthorized Text-to-image Diffusion-based Synthesis** [paper](https://arxiv.org/abs/2311.13127)\
-2023	Liang et al. **Mist: Towards Improved Adversarial Examples for Diffusion Models** [paper](http://arxiv.org/abs/2305.12683)\
+2023	Liang et al. **Mist: Towards Improved Adversarial Examples for Diffusion Models** [paper](http://arxiv.org/abs/2305.12683) [code](https://github.com/psyker-team/mist)
 
 :construction_worker: Work in progress.
