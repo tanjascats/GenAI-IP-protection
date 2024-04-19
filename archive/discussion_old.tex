@@ -1,0 +1,124 @@
+Mitigation techniques are gaining momentum due to many concerns mainly from the artists' communities. The legal landscape is not yet developed enough to provide the necessary laws and regulations for the ethical development and usage of generative models and AI-generated outputs. 
+At the moment, the responsibility lies on the end-user to use the technology ethically. For instance, Stable Diffusion's license agreement explicitly bans people from using the model in a way that breaks any laws or regulations. 
+Without any action from the side of model developers, the artists are bound to entrust the end-user. 
+Luckily, actions are already taken on many fronts - opt-out mechanisms on art-sharing websites for exclusion in data scraping such as the one on \textit{Deviant Art}, explicitly banning AI-generated images on art-sharing websites such as \textit{Newgrounds} ~\cite{noauthor_newgrounds_nodate}, the initiatives to remove the copyrighted training samples from the large dataset, and general interest from the research community for the efficient and effective mitigation techniques presented throughout this paper. 
+It is notable that it has been recognised that the legal systems and development of more responsible models might take time, and thus initiatives such as \textit{Glaze} and \textit{Have I been trained?} are already active services used by many artists.
+
+It will surely be challenging to navigate in this area in the future in a way that benefits both innovation and art. 
+Legal systems in the US, UK, and EU have recognised the great importance of access to data to fostering AI research and innovation. 
+US is hence rather open about the usage of copyrighted data in training AI, i.e. scraping and training AI on copyrighted data is permissible under the fair-use doctrine. 
+%where copyrighted works used as sources of data for pattern analysis aren’t explicitly covered by copyright rules. 
+As an example of these laws in action, Google Books authors and LinkedIn have lost their recent cases on these terms~\cite{noauthor_authors_2023,noauthor_web_nodate}.
+EU steps ahead in the attempts of meeting the trade-off between rights protection and innovation: the copyright holders are granted an opt-out choice, i.e. they can restrict the usage of their content for training AI. 
+The exceptions to this are the non-profit research institutions who have an unlimited right to mine the copyrighted data~\cite{noauthor_proposal_2016}. 
+
+The controversial outcomes of the generative AI models might fall under \textit{substantial similarity} category, however, this is very case dependent. The challenge here is that artistic style is difficult to copyright. And rightfully so, as it would limit and compromise the artistry in general.
+%does not protect ideas (post-impressionistic style), but rather the expression of ideas (Stary Night) which is a fundament. 
+The fact that AI gains \textit{inspiration} from art is not the fundamental problem - this is how humans have been creating art, too. The ethical problem lies in the efficiency and low cost of producing AI art that undermines the work and integrity of human-created art. 
+
+Another large ethical issue is monetising the AI product trained on a large corpus of copyrighted data. Many current text-to-image tools provide a commercial service (e.g. DALL-E). The art content is a vital part of training such models, however, the artists stay neither compensated nor credited at the very last. On top of that, the scraping happens without the artists' knowledge or consent.
+A solution may be (i) applying mitigation methods to prevent or retract the usage of copyrighted data or (ii) crediting artists whose art is used in the generation process (for instance, technology for substantial similarity between images already exists within CLIP retrieval). %\url{https://rom1504.github.io/clip-retrieval/}). 
+ % -caveats in the system - a non-profit scrapes the data, creates the dataset (LAION), stable diffusion trains on it and sells the product. Everyhting is legal. Is it ethical tho?
+
+ % artist are still crucial for the development and artists are still not compensated NOR attributed nor credited at very least (clip retreival has this opton - \url{https://rom1504.github.io/clip-retrieval/})! The hardest case is the case of "borrowing the inspiraiton from the artist - style mimicry" 
+
+
+
+
+% \textit{How to define artistic style?} 
+% Any works focusing on mitigation of style mimicry heavily depend on human subjective perception. While some components can be attributed to a style, e.g. color palette, types of motifs, types of edges, it is beyond hard to formally define the style and even further, to copyright it. 
+
+% \textit{}
+
+
+
+% Defining an artistic style. 
+
+% \textbf{Legal challenges}
+% It is difficult to copyright artistic style. This has been true for human created work and applies to AI-generated art. It has been generally seen as a positive thing - copyrighting style would cause a legal hell to the artists creating within the same genre, hence causing monopoly over artistic style. 
+% The problem with AI-generated art in a mimicked style is the j
+% Why is then AI-generated art problematic if it is inspired by 
+% So what is the \textit{actual} issue in mimicing style and why is it different from when a human does it? Lower cost and more efficient. It devalues human work and integrity 
+% Thin line from copyright hell because it would affect how artist get inspired 
+% Substantial similarity  "an elusive concept, not subject to a precise decision", we can expect that no general regulation will be given on style mimicry by AI, but rather case-dependant inspections. 
+% In short, the mimicry itself is not a problem, lack of consent? Also no.
+% It is the efficiency and low cost of producing it, hence it devalues human work and integrity .
+% The future of copyright is a difficult topic - the open access to creative works benefits humans because we are able to get inspired and build upon the  
+
+
+Responsibility comes on many fronts: data scraping should happen in a more controlled environment and taking consent into account, artists are encouraged to actively opt-in or -out of AI training, and art platforms and communities should take a stand on AI-generated art. Most importantly, an open discussion needs to continue between artists and institutions behind the technology.
+
+%\subsection{Legal landscape} % merge with discussion
+%\textit{Tom Mason, the chief technology officer of Stability.AI, says Stable Diffusion’s license agreement explicitly bans people from using the model or its derivatives in a way that breaks any laws or regulations.}~\cite{noauthor_this_nodate}
+
+
+% \textit{AI-generated art poses tricky legal questions. In the UK, where Stability.AI is based, scraping images from the internet without the artist’s consent to train an AI tool could be a copyright infringement, says Gill Dennis, a lawyer at the firm Pinsent Masons. Copyrighted works can be used to train an AI under “fair use,” but only for noncommercial purposes. While Stable Diffusion is free to use, Stability.AI also sells premium access to the model through a platform called DreamStudio.}~\cite{noauthor_this_nodate} 
+
+% \textit{In the US, LinkedIn lost a case in an appeals court, which ruled last spring that scraping publicly available data from sources on the internet  is not a violation of the Computer Fraud and Abuse Act.~\cite{noauthor_web_nodate} Google also won a case against authors who objected to the company’s scraping their copyrighted works for Google Books}~\cite{noauthor_authors_2023}
+
+% UK aims to give developers greater access to copyrighted data~\cite{noauthor_artificial_nodate}.
+% \textit{
+% The legality of using that training data is contested in the European Union~\cite{noauthor_euus_nodate}; in the U.S., it’s widely believed that a lot of it is permissible under fair-use doctrine.}~\cite{stokel-walker_this_2022}
+
+
+% \textit{One suggestion is that AI models could be trained on images in the public domain, and AI companies could forge partnerships with museums and artists, Ortiz says. 
+% It is not just artists. It is photographers, models, actors and actresses, directors, cinematographers, she says. Any sort of visual professional is having to deal with this particular question right now.}~\cite{noauthor_this_nodate} % todo: maybe add the recent strikes in Holywood
+
+% \textit{We expect them to be resolved over time, as AI becomes more ubiquitous and different groups come to a consensus as to how to balance individual rights and essential AI/ML research,” says Stability.AI’s Mason. “We strive to find the balance between innovating and helping the community}~\cite{noauthor_this_nodate}
+
+% Some online art communities, such as Newgrounds explicitly banns AI-generated images.
+% Content Authenticity Initieative are developing an open standard and provenance tool that would prove the authenticity of digital content via watermarking. It promotes trustworthiness and transparency by helping fight disinformation as well as IPRs of digital content creators.~\cite{noauthor_content_nodate}
+
+% Generative AI is a great opportunity for artists, as it can spark creativity, aid artistic creations and simply, be fun. 
+From another perspective, generative AI can very well serve as an aid in artistic creation. A line that clearly distinguishes what is a human creation and what is AI-generated is slowly being erased - the artists already using AI for inspiration by creating complex prompts that generate an image, then manipulate and edit digitally, print and paint over it, and with this winning art competitions~\cite{noauthor_ai-generated_nodate}. This means that we will have to iteratively rethink the role of AI in art and the definition of creativity.     %\url{https://www.smithsonianmag.com/smart-news/artificial-intelligence-art-wins-colorado-state-fair-180980703/} \url{https://www.nytimes.com/2022/09/02/technology/ai-artificial-intelligence-artists.html}
+It is already evident that the discussion on intellectual property rights in generative AI certainly holds existential connotations - the AI has now entered the art room, the space we so far believed is reserved for humans.
+Generative AI is a new, exciting technology and, if treated with criticism, it can benefit both the technological and art communities.   
+% It is important to note that artists are not having strictly negative feelings about gen AI using their data, for instance, more generated images in someone's style might even amplify their popularity.
+
+
+% The art community is not exclusively against AI-generated "art". AI, if used responsibly, can spark the inspiration, aid the artistic creations and simply, be fun.
+% However, as for any large innovation or change, it is vital to approach critically.
+
+ 
+% \section{Related work}
+% %\input{raw}
+% Data privacy violations: Training generative AI models using personal data without obtaining proper consent or adhering to data protection regulations may result in data privacy violations.
+
+
+%% 11.04.2024
+The rapid development of GAI sparked, besides discussion regarding intellectual property, debates on several other ethical aspects of the usage of GAI. 
+For instance, unfiltered training data and manipulative intents can lead to the generation of harmful content, including misinformation, deepfakes, imagery of violence and sexual content. 
+One of the methods addressing this is concept removal and unlearning. 
+Many of the proposed methods are also directly addressing style mimicry as discussed in \Cref{sec:mitigation-concept}. 
+We hypothesise that the work in the area of unlearning~\cite{wu_erasediff_2024} and concept removal~\cite{liu_geom-erasing_2023,ho_classifier-free_2022} can also be utilised in the IP protection scenario by treating the artistic style as a concept, although not yet evaluated for IP protection scenarios. 
+Furthermore, the idea behind detection-based methods that aim to remove harmful content by filtering it through safety checkers~\cite{rando_red-teaming_2022} could be repurposed for addressing copyright issues, filtering for instance art-related content.
+Similarly, there are notable cloaking methods~\cite{shan_fawkes_2020} that do not explicitly evaluate the IP protection scenario but are a valuable motivation for the methods in \Cref{sec:mitigation-adversarial}.
+
+A membership inference attack (MIA) is a type of attack where the aim is to determine whether a specific data point was used in training a model. 
+While it can be used as an attack to compromise privacy, it might also used by e.g. the model owner to estimate the privacy leakage of a model. 
+Traditionally developed for supervised models, several works have addressed MIA for generative models, including GANs~\cite{webster_this_2021,hayes_logan_2018} and diffusion models~\cite{matsumoto_membership_2023,hu_membership_2023}. 
+In the context of intellectual property protection, MIA could serve as a first line in the detection of unauthorised use of copyrighted content alongside the methods discussed in \Cref{sec:mitigation-detection}. 
+% \subsection{Related concerns}
+% Privacy, membership inference, harmful content removal, authorship, detection of generated content, attribution...
+
+Detection of generated content (text~\cite{noauthor_science_2024}, images~\cite{liu_detecting_2022}) plays an indirect role in intellectual property protection, especially when it comes to creative works. 
+
+Current detection techniques for AI-generated text however struggle with reliability due to large false negative rates~\cite{sadasivan_can_2024,weber-wulff_testing_2023}. 
+Moreover, the effectiveness significantly decreases when faced with machine translation and obfuscation techniques.
+Similarly, for images, reactive detection techniques relying on statistical artefacts are not effective either~\cite{corvi_detection_2023}.
+For image data, preemptive watermarking techniques are designed to embed a signal into the content to later be detected as generated content~\cite{zhu_hidden_2018,zhang_udh_2020}, or further, attributed to a specific generative model\footnote{\url{https://deepmind.google/technologies/synthid/}}.%~\cite{noauthor_synthid_2023}.
+These techniques have also shown to be insufficiently robust against minor perturbations~\cite{jiang_evading_2023}. 
+
+% \subsection{IPR of other entities in GenAI}
+% Intellectual property protection appears as an issue in the entire ecosystem of Generative AI. 
+While this survey reviews methods for safeguarding the data exposed to the training of generative models, there is an ongoing discussion and a body of research that addresses IP of other entities in the GAI ecosystem, including generated content~\cite{chesterman_good_2023} and models~\cite{ong_protecting_2021,peng_are_2023}. 
+There is no consensus on who (if anyone) should own the AI-generated content, whether it is the AI provider, the user who prompted the AI, or the AI itself. 
+
+So far, copyright protection has notably been denied for artists that included prompting AI in the process of creation, such as the prize-winning “Théâtre D’opéra Spatial” by Jason M. Allen~\cite{roose_ai-generated_2022} and "A Recent Entrance to Paradise" by Stephen Thaler~\cite{brodkin_us_2023} claiming that prompting alone is not enough to claim authorship, as the user has limited control over how AI systems interpret and generate the end-result. 
+However, the real interaction between the user and the AI is more complex -- the generated outputs in question are usually a result of many sequential prompts and a mix of other artistic techniques such as photography, oil painting etc. 
+Therefore the open question remains -- how much human input is necessary for the AI user to be qualified as an author? 
+The authorship questions naturally imply problems with the transparency of AI-generated content. 
+Approaches for detecting the AI-generated content exist, for example for the AI-generated text, but are not sufficiently robust against paraphrasing and other modifications~\cite{sadasivan_can_2024}. 
+Another option is to \textit{actively} embed a robust watermark carrying information about the AI that generated the content, such as SynthID.%~\cite{noauthor_synthid_2023}. 
+Watermarking techniques have also been proposed for protecting the IP of the models~\cite{ong_protecting_2021} as they can be a target of \textit{model extraction} attacks (a.k.a. \textit{model stealing}) where the attacker attempts to maliciously approximate a target model.
+Although there have been some successful imitations of LLMs in terms of style, such as LLaMA~\cite{touvron_llama_2023}, these models are critiqued for their decreased factuality compared to the original models~\cite{gudibande_false_2023}.

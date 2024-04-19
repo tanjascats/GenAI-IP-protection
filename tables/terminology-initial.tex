@@ -1,0 +1,36 @@
+
+\begin{table*}
+    \centering
+\caption{Overview and terminology of categories of IP protection methods.}
+\label{tab:terminology}
+
+    \resizebox{\textwidth}{!}{\begin{tabular}{l|ll}
+    \toprule
+         Category & Definition & Synonymous terms \\
+         \midrule
+         Dataset sanitisation & Modifying training dataset before it is used for model training & - \\
+         \hline
+         Prompt modification & Modifying textual prompts in T2I scenario at inference time & - \\
+         \hline
+         Adversarial perturbations & Applying noise to train data samples intentionally crafted to & adversarial noise~\cite{zhao_unlearnable_2023}, style cloak/\\
+ & disrupt the generation process&cloaking~\cite{shan_glaze_2023}, poisoning~\cite{liu_toward_2023},\\
+ & &adversarial watermark(-ing)~\cite{zhang_editguard_2023}, \\
+ & &watermark(-ing)\cite{ye_duaw_2023}, immunisation~\cite{salman_raising_2023}\\
+        \hline
+         Concept removal & Modifying the learning process to affect the downstream& concept unlearning~\cite{zhang_forget-me-not_2023}, concept \\
+ & content generation&ablation~\cite{kumari_ablating_2023}, data redaction~\cite{kong_data_2023}, \\
+ & &concept erasure~\cite{gandikota_erasing_2023}\\
+        \hline
+         Watermarking & The embedding of imperceptible signals into the content to & forensic watermarking~\cite{zhang_editguard_2023} \\
+ & assert ownership or trace unauthorised use&\\
+        \hline
+         Analytical data attribution & Applying post-hoc analytical methods to identify the & - \\
+ & contribution of specific train samples to the generated outputs&\\
+        \hline
+         Testing memorisation & Quantifying the memorisation capabilities of an underlying& -\\
+ & GAI model&\\
+ \bottomrule
+    \end{tabular}}
+    
+    
+\end{table*}

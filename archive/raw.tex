@@ -1,0 +1,59 @@
+\paragraph{Generative AI platforms}
+Dall-e (subscription-based), NovelAI (text), Stable Diffusion
+
+\paragraph{Glaze: Protecting Artists from Style Mimicry by Text-to-Image Models}
+\begin{itemize}
+    \item Protection method for defending against mimicry via transformers
+\end{itemize}
+
+\paragraph{Raising the Cost of Malicious AI-Powered Image Editing}
+Not really addressing intellectual property but rather fake-image generation using people's faces
+
+\paragraph{Have I been trained?}
+Herndon and Dryhurst are working on tools to help artists opt out of being in training data sets. They launched a site called Have I been trained which lets artist search to see whether their work is among the 5.8 billion images in the data set that was used to train Stable Diffusion and Midjourney. -- cited from \url{https://www.technologyreview.com/2022/09/16/1059598/this-artist-is-dominating-ai-generated-art-and-hes-not-happy-about-it/}. They use clip retrieval to search Laion-5B and Laion-400M
+
+\paragraph{Spawning} Opt-out mechanism for artist and an API for training ethical models by ensuring that all underlying data has been provided with consent. \url{https://api.spawning.ai/spawning-api}. There is no scientific publications on this technilogy
+
+\paragraph{Membership inference attack (Diffusion and GANs)}
+This is not really relevant for IP protection but exemplifies other vulnerabilities of the generative (in particular diffusion) model:
+\begin{itemize}
+    \item \href{https://arxiv.org/pdf/2301.09956.pdf}{Hu and Pang: Membership Inference of Diffusion Models}
+    \item \href{https://arxiv.org/pdf/2302.03262.pdf}{Matsumoto et al.: Membership Inference Attacks against Diffusion Models}
+    \item \href{https://arxiv.org/abs/2107.06018}{Webster et al.: This Person (Probably) Exists. Identity Membership Attacks Against GAN-Generated Faces} 
+\end{itemize}
+
+
+
+\paragraph{Provable Copyright Protection}
+\href{https://arxiv.org/abs/2302.10870}{Vyas et al.} provide a formal definition of \textit{near access-freeness}, i.e. a proof that the model produces output that diverges enough whether or not the copyrighted training sample is in the training data or not (there are some parallels with differential privacy). They provide experiments on transformers and diffusion models. 
+
+\paragraph{Input filtering as memorisation mitigation in diffusion models}
+\begin{itemize}
+    \item midjourney prevents the generation of known copyrighted data (Steve McCurry):\url{https://ceoln.wordpress.com/2022/12/16/some-light-infringement/}. The drawback of these filters is that they can be easily circumvented (Rando et al., Wen et al.) and the solutions are anyway just a patch and do not scale
+    \item \textbf{Removing concepts }(\href{https://arxiv.org/abs/2303.13516v2}{Kumari et al.}, \href{https://arxiv.org/abs/2211.05105}{Schramowski: Safe Latent Defusion}, \href{https://arxiv.org/pdf/2303.07345.pdf}{Gandikota et al.}): the drawback is that they require a list of all concepts to be erased which is impractical. For Safe Latent Defusion, the authors focus on removing inapropriate concepts such as violence and nudity while Kumari et al. focus on micing artistic styles, hence provide a technology for opt-out option for artistis whose art is already contained in the training data of the pretrained models. 
+\end{itemize}
+
+
+\paragraph{Sources}
+\begin{itemize}
+    \item \href{https://www.inverse.com/input/culture/mat-dryhurst-holly-herndon-artists-ai-spawning-source-dall-e-midjourney}{This couple is launching an organization to protect artists in the AI era}
+    \item \url{https://haveibeentrained.com/}
+    \item \href{https://www.reuters.com/legal/ai-created-images-lose-us-copyrights-test-new-technology-2023-02-22/#:~:text=AI\%2Dcreated\%20images\%20lose\%20U.S.\%20copyrights\%20in\%20test\%20for\%20new\%20technology,-By\%20Blake\%20Brittain&text=Feb\%2022\%20(Reuters)\%20\%2D\%20Images,a\%20letter\%20seen\%20by\%20Reuters.}{AI-created images lose U.S. copyrights in test for new technology}
+    \item \href{https://www.thedailystar.net/tech-startup/news/ai-art-generators-receive-copyright-lawsuit-3222706}{AI art generators receive copyright lawsuit}
+    \item \href{https://stablediffusionlitigation.com/pdf/00201/1-1-stable-diffusion-complaint.pdf}{Independent artists against stable diffusion - legal document}
+    \item \href{https://www.forbes.com/sites/robsalkowitz/2022/09/16/ai-is-coming-for-commercial-art-jobs-can-it-be-stopped/}{AI is coming for commercial art jobs. Can it be stopped?}
+    \item \href{https://www.hollyherndon.com/holly}{Holly+}
+    \item \href{https://www.nytimes.com/2022/09/02/technology/ai-artificial-intelligence-artists.html}{An AI-generated picture won an art prize. Artists aren't happy.}
+    \item \href{https://www.technologyreview.com/2022/09/16/1059598/this-artist-is-dominating-ai-generated-art-and-hes-not-happy-about-it/}{This artist is dominating AI-generated art and he is not happy about it.}
+    \item \href{https://www.businessinsider.com/ai-art-artists-getty-images-lawsuits-stable-diffusion-2023-1?op=1}{AI art generators face separate copyright lawsuits from Getty Images and a group of artists}
+    \item \href{https://ceoln.wordpress.com/2022/12/16/some-light-infringement/}{Some light infringement}
+    \item Extracting Training Data from Diffusion Models - Carlini et al. 01.23 [https://arxiv.org/pdf/2301.13188.pdf]
+    \item Diffusion Art or Digital Forgery? Investigating Data Replication in Diffusion Models - Somepalli et al. 12.22 https://arxiv.org/abs/2212.03860
+    \item Understanding and Mitigating Copying in Diffusion Models https://arxiv.org/abs/2305.20086 - Somepalli et al. 05.23
+    \item Beware of diffusion models for synthesizing medical images -- A comparison with GANs in terms of memorizing brain tumor images (this one I didnt read but had somewhere on list) Akbar et al. 05.23 https://arxiv.org/abs/2305.07644
+    \item Membership Inference of Diffusion Models https://arxiv.org/abs/2301.09956 - Hu and Pang 01.23
+    \item Membership Inference Attacks against Diffusion Models https://arxiv.org/pdf/2302.03262.pdf - Matsumoto et al. 03.23
+    \item \url{https://ceoln.wordpress.com/tag/copyright/}
+    \item \url{https://www.washingtonpost.com/comics/2023/02/14/ai-in-illustration/}
+    \item  \href{https://lexica.art/}{Lexica.art} is a search engine for Stable Diffusion generated images
+\end{itemize}

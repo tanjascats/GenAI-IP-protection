@@ -1,0 +1,35 @@
+\begin{table*}
+\centering
+\caption{Overview and terminology of categories of IP protection methods.}
+\label{tab:terminology}
+\rowcolors{2}{white}{gray!15}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l|ll}
+\hline
+\textbf{Category} &
+  \textbf{Definition} &
+  \textbf{Synonymous terms} \\ \hline
+Dataset sanitisation &
+  Modifying training dataset before it is used for model training &
+  - \\ \hline
+Prompt modification &
+  Modifying textual prompts in T2I scenario at inference time &
+  - \\ \hline
+Adversarial perturbations &
+  \begin{tabular}[c]{@{}l@{}}Applying noise to train data samples intentionally crafted to\\ disrupt the generation process\end{tabular} &
+  \begin{tabular}[c]{@{}l@{}}adversarial noise~\cite{zhao_unlearnable_2023}, style cloak / cloaking~\cite{shan_glaze_2023}, \\ poisoning~\cite{liu_toward_2023}, adversarial watermark(-ing)~\cite{zhang_editguard_2023}, \\ watermark(-ing)\cite{ye_duaw_2023}, immunisation~\cite{salman_raising_2023}\end{tabular} \\ \hline
+Concept removal &
+  \begin{tabular}[c]{@{}l@{}}Modifying the learning process to affect the downstream\\ content generation\end{tabular} &
+  \begin{tabular}[c]{@{}l@{}}concept unlearning~\cite{zhang_forget-me-not_2023}, concept \\ ablation~\cite{kumari_ablating_2023}, data redaction~\cite{kong_data_2023},\\ concept erasure~\cite{gandikota_erasing_2023}\end{tabular} \\ \hline
+Watermarking &
+  \begin{tabular}[c]{@{}l@{}}The embedding of imperceptible signals into the content to\\ assert ownership or trace unauthorised use\end{tabular} &
+  forensic watermarking~\cite{zhang_editguard_2023} \\ \hline
+Analytical data attribution &
+  \begin{tabular}[c]{@{}l@{}}Applying post-hoc analytical methods to identify the\\ contribution of specific train samples to the generated outputs\end{tabular} &
+  - \\ \hline
+Testing memorisation &
+  \begin{tabular}[c]{@{}l@{}}Quantifying the memorisation capabilities of an underlying\\ GAI model\end{tabular} &
+  -
+\end{tabular}
+}
+\end{table*}

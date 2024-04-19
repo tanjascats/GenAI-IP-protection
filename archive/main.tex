@@ -1,0 +1,1049 @@
+%\documentclass{article}
+\documentclass[conference,table]{IEEEtran} % Rudi: added [table] for row colours via xcolor
+
+\IEEEoverridecommandlockouts
+
+% Language setting
+% Replace `English' with e.g. `Spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=2cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{cleveref}
+\usepackage{todonotes}
+\usepackage{array} % required for text wrapping in tables
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{subfig}
+
+\newcommand{\reminder}[2][]
+{\todo[color=blue!18, #1]{#2}}
+
+\title{U Can't Gen This?\\
+A Survey and Systematisation of\\ Intellectual Property Protection Methods\\ for Data in Generative AI}
+% Protecting intellectual property in the age of generative AI: A review of technical approaches and challenges 
+% Guarding Creativity: Technical Strategies for Safeguarding Digital Content Intellectual Property in Generative AI training
+% Digital Guardians: Protecting Intellectual Property in the Generative AI Applications – A Comprehensive Survey
+
+
+\author{
+    \IEEEauthorblockN{Tanja Šarčević}
+    \IEEEauthorblockA{\textit{SBA Research},
+        Vienna, Austria\\
+        tsarcevic@sba-research.org
+        %, 0000-0003-0896-9193
+    }
+\and
+    \IEEEauthorblockN{Alicja Karlowicz}
+    \IEEEauthorblockA{\textit{SBA Research},
+        Vienna, Austria\\
+        akarlowicz@sba-research.org
+        %, 
+    }
+\and
+    \IEEEauthorblockN{Rudolf Mayer}
+    \IEEEauthorblockA{\textit{SBA Research},
+        Vienna, Austria\\
+        rmayer@sba-research.org
+        %, 0000-0003-0424-5999
+    }
+\and
+    \IEEEauthorblockN{Ricardo Baeza-Yates}
+    \IEEEauthorblockA{\textit{EAI, Northeastern University},
+        Boston, MA, USA\\
+        rbaeza@acm.org
+        %, 0000-0003-3208-9778
+    }
+\and
+    \IEEEauthorblockN{Andreas Rauber}
+    \IEEEauthorblockA{\textit{TU Wien},
+        Vienna, Austria\\
+        andreas.rauber@tuwien.ac.at
+        %, 0000-0002-9272-6225
+    }
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\pagestyle{plain}
+
+\begin{abstract}
+Large Generative AI (GAI) models have the unparalleled ability to generate text, images, audio, and other forms of media that are increasingly indistinguishable from human-generated content.
+As these models often train on publicly available data, including copyrighted materials, art and other creative works, they inadvertently risk violating copyright and misappropriating intellectual property. Due to the rapid development of generative AI technology and pressing ethical considerations from stakeholders, protective mechanisms and techniques are emerging at a high pace but lack a systematisation.
+
+In this paper, we study the concerns regarding the intellectual property rights of training data and specifically focus on the properties of generative models that enable misuse leading to potential IP violations. Then we propose a taxonomy that leads to a systematic review of technical solutions for safeguarding the data from intellectual property violations in GAI.
+
+% We hope to contribute to the ongoing conversation about the complex relationship between technology, creativity, and legal rights in the age of generative AI. We discuss the importance of addressing these challenges proactively, with a goal of balance between AI-driven innovation and the protection of intellectual property rights.
+\end{abstract}
+
+\section{Introduction}
+Generative Artificial Intelligence (GAI) has revolutionised various domains, demonstrating remarkable capabilities in generating realistic text~(ChatGPT~\cite{openai_gpt-4_2023}),
+%noauthor_dalle2_nodate}), 
+music~(MuseNet\footnote{\url{https://openai.com/research/musenet}}) and images~\cite{rombach_high-resolution_2022,ramesh_hierarchical_2022} (see \Cref{fig:introduction}),  among other outputs. %~\cite{noauthor_musenet_nodate} 
+This cutting-edge technology has the potential to disrupt traditional creative processes, enabling AI systems to autonomously produce content that mirrors human creativity. 
+While GAI opens up exciting opportunities for innovation and artistic expression, it also presents significant challenges concerning intellectual property rights and ethical considerations.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/mchammer.png}
+    \caption[]{\textit{U can't gen this: MC Hammer failing to generate a photo of himself}", generated using DALL-E 3\footnotemark.
+    } 
+    \label{fig:introduction}
+\end{figure}
+\footnotetext{\url{https://openai.com/dall-e-3}}
+Intellectual property rights (IPR) encompass a set of legal protections designed to safeguard the creations of human intellect. These rights, including copyright, patents and trademarks have played a vital role in promoting creativity, innovation, and fair compensation for creators. However, the emergence of GAI has sparked debates surrounding the nature of these rights when AI systems generate original content without direct human intervention but rather by generalising from a large corpus of human creation.
+
+Recently, artists have been noticing the evidence of the non-originality of generative models through some controversial examples. 
+The name of a Polish artist, Greg Rutkowski, known for his fantasy illustrations, appeared in more than 93,000 prompts of Stable Diffusion - the prompts have been used to create art in his distinct style, very successfully so. 
+As a result, many AI-created images inspired by Rutkowski's style have been published and appear in online searches~\cite{mit_technology_review_this_2022}. The case was followed by more artists reporting the same behaviour of generative models. 
+Three artists, Sarah Anderson, Kelly McKernan, and Karla Ortiz filed a class action lawsuit against Stability AI\footnote{\url{https://stability.ai/}}, Midjourney\footnote{\url{https://www.midjourney.com/}}%~\cite{noauthor_midjourney_nodate}
+, and Deviant Art\footnote{\url{https://www.deviantart.com/}}%~\cite{noauthor_deviantart_nodate}
+, over their usage of Stable Diffusion~\cite{rombach_high-resolution_2022}, alleging copyright infringement. They assert that these models used their works and the works of thousands of other artists as training data without authorisation.
+Another lawsuit was filed by Getty Images against Stability AI for using more than 12 million images and associated metadata without authorisation or compensation to train their model~\cite{nolan_ai_2023}.
+
+One major aspect of the underlying problem and an aspect that distinguishes these current cases from historic cases of plagiarism and other forms of copyright infringement is the sheer scale.
+While the artists take years of education and practice to develop their distinct artistic style and ultimately profit from commissioning their art, tools that use their art without consent and create a competitive alternative in an instant, seemingly without a quantitative limit, present a viable threat to their work and careers.
+
+This situation sparked research on mitigation methods for potential intellectual property rights violations in GAI. 
+The protection encompasses a diverse array of technical strategies, each tailored to address specific vulnerabilities.
+For instance, some techniques aim to support the artist in opting out of large scraped datasets, while other works focus on disabling style mimicry behaviours. 
+Many of these techniques build upon prior research on other ethical issues in GAI, such as privacy~\cite{matsumoto_membership_2023}, or inappropriate content generation~\cite{gandikota_erasing_2023}.
+
+
+We have now arrived at a point where a multitude of technical solutions are available, but a systematisation of the threats and vulnerabilities they address, their costs (e.g., in terms of distorting original artwork), and their shortcomings for protection is lacking.
+This paper addressed this gap. It systematically reviews the current state-of-the-art technical approaches for safeguarding training data against copyright and IP violations. 
+We outline the potential violations of intellectual property considered in the literature and provide a discussion about the underlying properties of generative models that enable such violations. 
+Following this, we present a variety of technical strategies, ranging from training data sanitisation, model modifications, adversarial injections and policy-driven frameworks, that have been proposed to address these concerns.  
+Our contributions include:
+\begin{itemize}
+    \item a review of potential IP violations of training data for GAI models
+    \item a systematic review of technical solutions for protecting the IP of content available for training the large GAI models 
+    \item taxonomy and classification of IP protection methods
+    \item discussion on policy and practice revolving IP issues in the context of GAI
+\end{itemize}
+
+% Our contributions:
+% - review of potential IP violations of training data for GAI models
+% - a systematic review of technical solutions for protecting the IP of content available for training the large GAI models 
+% - a taxonomy and classification of technical solutions 
+% - a discussion on policy and practice revolving around IP issues in the context of GAI
+
+
+The remainder of this paper is organised as follows: \Cref{sec:related-work} discusses other survey papers on the intersection of intellectual property rights and GAI. In \Cref{sec:methodology}, we describe our research methodology. In \Cref{sec:background}, we provide a detailed background on the technology underlying large generative models, while in \Cref{sec:IPR-threats}, we discuss the threats to IPR in GAI applications. In \Cref{sec:mitigation} we provide a taxonomy and a systematisation of the state-of-the-art on protecting the IP of training data. 
+In \Cref{sec:discussion} we discuss the surrounding landscape of issues in GAI and IP protection. Finally, we provide conclusions in \Cref{sec:conclusion}.
+
+
+\section{Related work}\label{sec:related-work}
+% todo: can be placed at the end --> see comments further in the doc
+% comparison with existing surveys
+%TODO: overall a bit too short; I think several works still need to be described better as to why they fall short; I added some comments, but please check it all together as well
+Several works have investigated various issues surrounding IP rights in the age of generative AI, from different perspectives.
+Works considering more general issues of GAI, such as privacy and security of AI-generated content (AIGC), mention and describe methods for IP protection from the technical perspective -- however, do not provide sufficient detail. For example, Wang et al.~\cite{wang_survey_2023} cover only watermarking methods when it comes to IP protection in GAI. Chen et al., in two consecutive surveys~\cite{chen_challenges_2023,chen_pathway_2023}, outline issues such as misinformation, toxicity, the vulnerability of models due to malicious usage, and copyrights of AIGC, but do not discuss and classify technical protection approaches in-depth.
+Wang et al.~\cite{wang_security_2023} address several relevant methods. For example, they consider \textit{concept removal} to remove toxic content, while we, however, consider the angle of protecting the IP of training data.
+Zhong et al.~\cite{zhong_copyright_2023} provide an empirical review that evaluates three methods for IP protection of GANs: adversarial-based, watermarking, and attribution. While they demonstrate their effectiveness for copyright protection, they do not include a comprehensive review and classification of existing IP protection approaches. 
+
+Several papers provide a survey on the legal~\cite{smits_generative_2022,chesterman_good_2023} and societal~\cite{hristov_artificial_2020} perspective of IPR in the context of generative AI, but do not discuss technical protection methods. 
+
+There are several surveys on underlying concepts of IP protection in generative AI. We discuss in \Cref{sec:mitigation-adversarial} that many methods rely on the creation of adversarial examples and poisoning attacks. 
+For discriminative deep neural networks, Zhang et al.~\cite{zhang_adversarial_2019} systematise work on adversarial examples while Cina et al.~\cite{cina_wild_2023} summarise the poisoning attacks and defences.
+Sun et al.~\cite{sun_adversarial_2023} focus on adversarial attacks against generative models (GANs and VAEs).
+Although those methods are considered attacks on neural networks, they are used in IP protection as they show an effective way of manipulating the model towards a certain behaviour. 
+This inverted scenario has already been investigated for IP protection of ML models, where model watermarking is achieved via adversarial examples, discussed in surveys on IP protection of ML models~\cite{lederer_identifying_2023,regazzoni_protecting_2021,boenisch_systematic_2021}.
+
+
+\section{Methodology}\label{sec:methodology}
+% exclusion: works that do not evaluate on IP protection scenario are excluded, but those that describe similar or the same mechanisms in other scenarios such as privacy and harmful content removal are mentioned in section xy
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/stats.png}
+    \caption{The literature distribution over types of protection methods and year of publication.}
+    \label{fig:stats}
+\end{figure}
+This paper focuses on technical approaches for safeguarding the intellectual property of data used to train the generative models, such as LLMs, GANs and diffusion models. 
+Issues relating to the intellectual property and copyrights of training data, in large part, intersect with related ethical issues such as privacy and the generation of harmful content. Therefore, many solutions use similar ideas to achieve diverse goals, often with subtle differences in how the techniques need to be used. 
+We hence focus our scope on the methods that directly evaluate at least one IP violation scenario, and exclude other works; however, in \Cref{sec:discussion}, we compare the studied methods to, e.g., methods for removing harmful content.
+
+Our literature research is based on systematic literature studies principles, following the guidelines by Kitchenham et al. \cite{kitchenham_guidelines_2007} and Wohlin \cite{wohlin_guidelines_2014} to generate the collection of peer-reviewed conference papers and journal articles (\textit{formal literature}), as well as pre-prints of methods that in quality are close to peer-reviewed papers, and also provide open-source code of their solutions (\textit{grey literature}). 
+We also consider other forms of grey literature, such as blogs and articles, if they serve as technical reports of highly relevant techniques.  
+
+The main reason for the inclusion of grey literature is the high pace of the field and the fact that many influential works might be currently under review at formal publishing venues.
+\Cref{fig:stats} shows the distribution of the publications of protection methods and their publication year. 
+Overall, we can see that the vast majority of relevant literature on technical solutions to protect IPR appeared just within the last year -- there are only five papers published before 2022, but 35 papers since.
+
+When analysing the different focal points of the technical approaches, shown in \Cref{fig:stats}, we can see that the most studied approach is \textit{adversarial perturbations}, with eleven papers studying them in the context of IP protection in generative AI.
+A further eight papers each consider \textit{watermarking} and \textit{concept removal}, while \textit{training data and prompt sanitisation} is investigated by five works.
+The least researched techniques are \textit{analytical data attribution} with four papers and \textit{testing memorisation} with 3 papers.
+
+\section{Background}\label{sec:background}
+In this section, we describe the required background and state-of-the-art of large GAI models.
+
+\subsection{Variational Autoencoders}
+Variational Autoencoders (VAEs)~\cite{kingma_auto-encoding_2022} are a type of probabilistic generative model composed of an encoder and decoder trained together. The encoder transforms the input to a lower-dimensional latent space, while the decoder reconstructs the input from this compressed representation. Unlike conventional Autoencoders, which learn a deterministic mapping from the input to the latent space, VAEs introduce probabilistic modelling, as the input space is mapped to a probability distribution. This way, VAEs express not just single points in the latent space, but distributions of potential representations. Because the latent space is continuous, the decoder can generate novel data points that smoothly interpolate among training data points. 
+VAEs are learned using both a reconstruction loss, which minimises the dissimilarity between original and reconstructed data, and a regularisation loss. The regularisation loss, in the form of the Kullback-Leibler divergence, ensures a balanced distribution of latent representations, thus preventing overfitting and encouraging the encoder to map the latent space close to a Gaussian distribution. 
+VAEs are flexible in the type of data they process and can be combined with other generative models~\cite{bao_cvae-gan_2017, pandey_diffusevae_2022}.
+
+
+\subsection{Generative Adversarial Networks}
+Generative Adversarial Networks (GANs), introduced by Goodfellow et al.~\cite{goodfellow_generative_2014} in 2014, consist of two competing networks: the generator and the discriminator. 
+The generator generates novel output from the data distribution, by transforming sampled noise vectors. During the training process, the generator learns the mapping of latent space (sampled vectors) to the target data distribution.
+Simultaneously, a discriminator network is trained to differentiate between samples generated by the generator (fake samples) and original inputs (real samples). 
+The generator, in response, adjusts its parameters to fool the discriminator into accepting its outputs as authentic representations, improving its ability to produce realistic samples. 
+Through this adversarial training, both networks compete with each other to strike a balance between their performance and produce high-quality samples. 
+
+The major body of research has focused on GANs for the image domain, and since the introduction of the first works, many variations and implementation improvements have emerged resulting in state-of-the-art architectures such as ProGAN~\cite{karras_progressive_2018}, BigGAN~\cite{brock_large_2019} and StyleGAN~\cite{karras_style-based_2019} for generation task, or CycleGAN~\cite{zhu_unpaired_2020} and StarGAN~\cite{choi_stargan_2018} for image-to-image translation (translating an image from source domain to target domain; I2I).
+
+\subsection{Diffusion Models}
+%include latent diffusion by Rombach
+Diffusion models, inspired by non-equilibrium thermodynamics, are based on iteratively destroying an input image and training a network to reverse this process. The concept dates back to 2015 when Sohl-Dickstein introduced the baseline idea~\cite{sohl-dickstein_deep_2015}. However, it was not until Ho et al.~\cite{ho_denoising_2020} and Dhariwal and Nichol~\cite{nichol_improved_2021} improved upon the architecture and implementation that diffusion models gained widespread recognition, later proving their utility and advantages over GANs~\cite{dhariwal_diffusion_2021}.
+In the forward diffusion process, the model gradually adds Gaussian noise to the input image until it becomes pure noise. Conversely, in the reverse process, the model predicts and removes the added noise in a similar, gradual way. At inference (generation) time, the model samples from a Gaussian distribution and performs denoising to generate a novel image.
+
+Diffusion models suffer from high computational complexity and long inference time. Latent diffusion models (LDMs) address this issue by operating in the latent space rather than directly in the pixel space~\cite{rombach_high-resolution_2022}. Transforming the images into latent representations compresses the data into lower-dimensional forms, which are perceptually equivalent, yet they reduce the complexity of the input and preserve the details in the decoded images.
+In LDMs, the encoding and decoding processes are handled separately from the diffusion process. An independent autoencoder is utilised for this purpose -- it is trained to transition between latent representations and images using perceptual loss to compare high-level features and patch-based adversarial objectives to capture finer details and enhance realism. 
+Additionally, a regularisation term is added, similar to standard VAEs, in order to prevent high-variance latent representations, by pushing them towards Gaussian distribution. 
+Consequently, during the inference phase, LDMs generate a latent representation, which is then translated into a high-quality image by the decoder.
+
+Generation via diffusion models can be conditioned on image labels or complex text prompts semantically describing the desired output image. Text-to-image models utilise text encoders, such as Contrastive Language-Image Pre-Training (CLIP)~\cite{radford_learning_2021}, to capture the natural language of text prompts and map it to embeddings later injected into the model.
+
+\subsection{Large Language Models}
+% which models make sense to mention?? - look which ones are mentioned later
+While the models described above are mostly used for image generation, the rise of GAI fuelled by Large Language Models (LLMs) has opened new horizons for text generation. LLMs are general-purpose language models, trained on extensive text datasets crawled from the Internet and other sources. They typically rely on self-attention and transformer-based architectures~\cite{vaswani_attention_2017} to predict the next token in a sequence; they allow capturing long-context dependencies in text. The interaction with LLMs is commonly done through prompt engineering, where users provide specific instructions to the model. LLMs are versatile and can be used for a variety of tasks such as text generation, translation, summarising, and question-answering. Notable models include the family of Generative Pre-trained Transformers (GPTs) from OpenAI~\cite{radford_improving_nodate, openai_gpt-4_2023}, which also features in the popular chatbot ChatGPT. 
+Recent advancements in LLMs encompass diverse models such as the Gemini model family~\cite{gemini_team_gemini_2023}, Large Language Model Meta AI (LLaMA)~\cite{touvron_llama_2023}, and StableLM\footnote{\url{https://stability.ai/stable-lm}}, developed by Stability AI.
+% gpts, palm, gemini, llama
+
+\section{Threats to the IP of training data in GAI}\label{sec:IPR-threats}
+In this section, we first enumerate the potential IP violations of data used to train generative models. 
+As this data oftentimes includes valuable content such as artworks and journal articles that reflect human creativity and skill, using this content in generative processes sparked a lot of public backlash and lawsuits. In the following, we use these cases to give context and background to each specific threat to IP. 
+% describing the problem and formulating the threats; lawsuits
+Secondly, we dedicate a section to the exploitable properties of the generative models that enable IP violations, \textit{memorisation} and \textit{content-style disentanglement}. %TODO: should this then maybe described before we talk about the outcomes?
+% (Tanja)I think the outcomes give a good introduction to the overall problem. Then, in the "Explotable properties" we dive deeper into the topic.
+\subsection{Potential IP violations}
+Intellectual property rights violations in GAI models can occur in various ways. Some common violations include the following.
+
+\subsubsection{Unauthorised data usage}
+If a GAI model uses data without proper authorisation, it can lead to violations of data ownership rights. For instance, a group of developers filed a class action lawsuit against Github claiming a violation of the Digital Millennium Copyright Act for unauthorised use of code to develop the Github Copilot\footnote{\url{https://github.com/features/copilot}}. They claim that Github did not comply with open-source licensing terms and appropriate attribution~\cite{losio_first_2022}.
+
+% enumerate cases how authorisation might be given / usage might be restricted
+There are some special cases in the scope of a GAI process that describe special types of unauthorised usages:
+        \paragraph{Unauthorised training} The AI provider uses the data for training the GAI model without authorisation, or a user uses the data for fine-tuning the models without authorisation. % todo: could expand
+        \paragraph{Unauthorised editing} Altering the original content without authorisation may be considered copyright infringement. 
+        Text-to-image diffusion models and tools such as Instruct-Pix2Pix~\cite{brooks_instructpix2pix_2023}, HIVE~\cite{zhang_hive_2023}, Blended Diffusion~\cite{avrahami_blended_2022} and Imagic~\cite{kawar_imagic_2023} have the capability to edit images based on used instructions, allowing changes to be made to a source image, so-called image-to-image translation (I2I). 
+        The convenience of these methods in terms of e.g. skills required over image-editing tools such as Photoshop raises concerns over the potential misuse, including copyright infringement. 
+        Artists are exposed to issues from unauthorised edits of their work such as misinterpretation by the audience and financial losses due to alterations that compromised the original ideas and artistic value. 
+
+\subsubsection{Plagiarism and imitation} 
+If a GAI model generates content that closely resembles copyrighted works, it may be considered plagiarism and infringe upon the original creator's copyright. 
+For example, The New York Times filed a lawsuit against OpenAI, showing many examples in which OpenAI software re-created New York Times stories nearly verbatim~\cite{grynbaum_new_2023}. 
+In another example, a few artists have filed lawsuits for generative models copying their styles~\cite{brittain_judge_2023}.
+For visual content, an instance of plagiarism or imitation is \textit{style mimicry}~\cite{gal_image_2022}; for text these include \textit{text paraphrasing}, \textit{replicating verbatim} and \textit{idea replication}~\cite{lee_language_2023}, while for audio, the literature mentions \textit{voice cloning}~\cite{qian_autovc_2019}.
+\paragraph{Style mimicry in visual art}
+% motivation
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/mimicry.jpg}
+    \caption{\textbf{Style mimicry} in Stable Diffusion. Left: original artwork by Hollie Mengert vs. Right: images generated in her style~\cite{baio_invasive_2022}}
+    \label{fig:style-mimicry}
+\end{figure}
+Recently, several artists have found that their works are contained in the training data of large diffusion models and that an end-user is able to generate art in the styles of these artists~\cite{mit_technology_review_this_2022}, initiating numerous copyright lawsuits~\cite{nolan_ai_2023}.
+In these cases, the art pieces are not blatantly copied from the training set, however, the art is rather mimicked and appears to be a piece from these artists.
+For contemporary artists who are recognised for their distinct style and who are still producing and selling art, such capabilities appear threatening.  
+
+% todo: introduce with the term "subject driven synthesis"
+This phenomenon has been called \textit{style mimicry}. The end-user uses an AI model to generate art in a victim artist's style, without the artist's consent. 
+This type of attack is mostly prominent in text-to-image (T2I) models where the end-user may prompt text such as "\textit{mountain castle in the style of Monet}" and obtain a high-resolution image of the prompted object (mountain castle) exhibiting distinctive features of Monet's paintings (pastel colours, short brushstrokes and other impressionistic elements). 
+These generative models require that the works of an artist are well represented in the training set. This is hence not bound to the great artist from the past, but can also replicate the style of contemporary, working artists, exemplified in \Cref{fig:style-mimicry} for images generated in the style of the artist Hollie Mengert.
+ 
+Mimicry can be achieved for styles that are not necessarily part of the training data for publicly accessible generative models. For this, the attacker needs access to the weights of a well-trained generic text-to-image model and access to artwork samples from the target artist to fine-tune the generic model using the additional samples. 
+This is called personalised or customised text-to-image generation (CT2I).
+In other words, the end-user can calibrate a generic model to produce images in the style of the target artist even if their art does not initially appear in the training data. 
+State-of-the-art CT2I approaches include Textual Inversion~\cite{gal_image_2022} which adds a special text embedding for the new unseen concept, DreamBooth~\cite{ruiz_dreambooth_2023} which fine-tunes a diffusion model on a small number of samples on the same subject and Low-Rank Adaptation (LoRA)~\cite{hu_lora_2021} which modifies a small number of additional weights and adds them to the original parameters of a diffusion model. 
+
+\paragraph{Text plagiarism}
+LLMs are trained on vast datasets that include a wide range of sources from the internet, books, articles, etc. 
+When generating text, these models may produce content similar or identical to the original training data~\cite{carlini_extracting_2021,mccoy_how_2023}.
+Lee et al. identified three types of text plagiarism~\cite{lee_language_2023}:
+\begin{itemize}
+    \item \textit{replicating verbatim} -- exact copies of words
+    \item \textit{paraphrasing} -- synonymous substitution, word reordering, back translation 
+    \item \textit{idea replication} -- a representation of the core content in an extended form
+\end{itemize}
+
+%REal life cases: ChatGPT plagiarising NY Times\cite{dreadful} and online articles \cite{bard}
+\paragraph{Voice cloning} 
+Voice cloning has been used to create synthetic voices in different industries (voice assistants, video games, speaking aids, etc.).
+Voice cloning is achieved either by voice conversion (a.k.a. voice style transfer) or text-to-speech (TTS) generation.
+Voice conversion is a technique for modifying the source to a target speaker's speech without changing linguistic information.  
+The state-of-the-art voice conversion techniques are typically relying on GANs~\cite{kaneko_cyclegan-vc2_2019} and autoencoders~\cite{qian_autovc_2019}. 
+TTS techniques are more complex systems consisting of text analysis, acoustic model and audio synthesis~\cite{wang_tacotron_2017,ren_fastspeech_2022}. 
+They exhibit more flexibility in voice generation as they transfer any piece of text to speech without the original speech as a reference.
+
+Voice cloning technology, however, imposes security and privacy threats when used with malicious intentions.
+A voice cloning attack is an unauthorised synthesis of a person's timbre (e.g. patterns, intonation and other speech characteristics) with the goal of impersonation or spreading misinformation. 
+Voice cloning can thus cause financial losses, public panic, reputation damage and copyright infringement~\cite{brewster_fraudsters_2021}.
+
+\subsubsection{Reproduction of copyrighted materials} 
+    \begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/replicate_userprompts.JPG}
+    \caption{\textbf{Data replication} in Stable Diffusion. Top column: generated images, bottom column: training samples~\cite{somepalli_understanding_2023}}
+    \label{fig:replication-user}
+\end{figure*}
+%TODO: is this a specific case of plagiarism mentioned above? or the other way around? Clarify & differentiate, either way if yes or if no
+If a GAI model reproduces copyrighted images, texts, music, or other creative works without permission, it can violate copyright laws. 
+    %Recent studies showed that generative models are able to reproduce individual images from the training set, a.k.a. \textit{data replication}, raising the concerns about reproduction of copyrighted material~\cite{carlini_extracting_2023}. 
+Recent works have shown that state-of-the-art diffusion models can reproduce images from their training data up to near-perfect accuracy when prompting the model with captions directly sampled from the training dataset~\cite{somepalli_diffusion_2022,carlini_extracting_2023}. 
+For example, the Stable Diffusion model is capable of reproducing training data as shown in the examples in \Cref{fig:replication-user}.
+Furthermore, replication is shown to be possible in some instances even when captions do not mention the content from the generated images. 
+This mostly happens via prompts precisely describing the contents of existing works of art~\cite{somepalli_understanding_2023}, hence relating to how an end-user user would create their prompts. % todo: maybe here we could get some examples (maybe I could cite examples from appendices or those not being highlighted in the related papers)
+
+The definition of data replication can be treated differently for different attacker objectives which can span from privacy attacks to IPR violations. 
+For IPR violations, there needs to be a substantial similarity in the content and its prominent elements between the generated sample and its training sample match.
+For the image domain, replicated content is content containing an object, either in the foreground or background, that appears identically in a training image, neglecting minor variations in appearance that could result from data augmentation~\cite{somepalli_diffusion_2022}.
+Data replication may occur without the malicious intention of the end-user as well. 
+We discuss in \Cref{sec:memorisation} how some generative models are likely to generate copies of the training data samples due to high memorisation capability. 
+
+\subsubsection{Lack of or wrong attribution} 
+The problem of attribution in AI-generated relates to determining and acknowledging the original source of content that GAI produces. The process of generating these forms of content complicates the issue of attribution since AI outputs can reflect the influence of numerous original works. 
+Real-life scenarios, such as the aforementioned lawsuits against Github and OpenAI, imply and highlight the issues of attribution and compensation to original creators. 
+The misattribution issue is particularly problematic because it not only denies creators recognition and compensation but also challenges the very foundations of copyright law, which aims to incentivise creativity and innovation by protecting the rights of the creator~\cite{ulku_kahveci_attribution_2023}.
+
+\subsubsection{Trademark infringement} 
+If a GAI model generates content that includes trademarks or logos without proper authorisation, it may infringe upon the rights of the trademark owner. 
+Getty Images is alleging that Stable AI, the company behind Stable Diffusion, copied more than 12 million images and associated metadata to build their model without permission from or compensation to Getty Images. 
+Moreover, they argue that the generated images have a modified version of the Getty Images watermark attached to odd images, tarnishing the reputation of Getty Images~\cite{vincent_getty_2023}.
+    
+\subsubsection{Unfair competition} 
+If a GAI model is used to create content that imitates a competitor's products or services, leading to confusion or deception among consumers, it can be considered unfair competition. The previously mentioned lawsuit of Getty Images further argues that Stability AI is now a direct competitor to them for creative imagery as it has used a large number of their images. In cases of style mimicry, copyright laws provide limited protection for artistic style, therefore artists stay concerned about the imposed unfair competition.  
+
+
+% To avoid intellectual property rights violations in generative AI models, developers should ensure they have the necessary rights and permissions for the data and technologies used during training and refrain from using copyrighted or proprietary material without proper authorisation.
+
+%In the following, we first describe the threat model that leads to the above violation of rights. Identified actions (or attacks) usually cause multiple violations at a time. 
+%In practice, some violations are a direct consequence of one another such as lack of attribution and plagiarism.  
+ 
+% \begin{figure*}[ht]
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/diffrep_wide.jpg}
+%     \caption{Data replication in Stable Diffusion model~\cite{somepalli_diffusion_2022}}
+%     \label{fig:replication}
+% \end{figure*}
+
+
+% \subsection{Scenarios} % incorporate this somewhere
+% \begin{enumerate}
+%     \item T2I -- text to image
+%     \item CT2I -- customised text-to-image
+%     \item I2I -- image to image
+% \end{enumerate}
+ 
+
+
+\subsection{Exploitable properties of generative models}
+\subsubsection{Memorisation}\label{sec:memorisation} 
+Potential IP violations such as data replication, style mimicry and text plagiarism are possible partially due to the memorisation capabilities of generative models. 
+%Memorisation is generally more relevant for directly copying the art in the training data (i.e. \textit{stealing the content}; one of the 3 identified types of IP thefts) and some privacy issues like membership inference. 
+%Memorisation capabilities are the underlying reason why is it at all possible to recreate the training data with the user-generated text prompts, hence the defence majorly addresses reducing the memorisation (or at least needs to)., although there is no formal and universally accepted definition. 
+Some works argue that the memorisation in deep learning is an equivalent of overfitting~\cite{feldman_does_2020,feldman_what_2020,arpit_closer_2017}, %add paper with contrastive opinion? there is mem connected to overfitting and local mem
+while others point to local memorisation that occurs simultaneously with generalisation in the same model, making a distinction from global overfitting~\cite{burg_memorization_2021, tirumala_memorization_2022}. 
+In any case, the memorisation capabilities have been shown to exist for a range of generative models for different domains, including specific instances like GANs~\cite{webster_this_2021} and diffusion models~\cite{somepalli_diffusion_2022}, as well as broader category of generative language models~\cite{lee_language_2023,jagielski_measuring_2023,carlini_quantifying_2023}.
+
+% mention how memorization is defined, pixel-level (near-copies) vs object-level, effective memorization, k-eidetic memorization? is it relevant or detail
+Within the domain of image generation, memorisation can be quantified through e.g. image similarity metrics. In the case of near-duplicates, exact memorisation involves detecting matches utilising a straightforward $l_2$ distance computation between the generated image and the training samples in the pixel space~\cite{carlini_extracting_2023}. Alternatively, relative metrics consider the distance of the closest image in relation to other $n$ nearest neighbours in the training set~\cite{carlini_extracting_2023, yoon_diffusion_2023, gu_memorization_2023}.
+Although pixel-level memorisation effectively identifies near-copies within the training data, it remains susceptible to deception through minor pixel shifts. Notably, large models such as Stable Diffusion have exhibited the capacity not only to memorise entire images but also to retain partial information, such as individual objects~\cite{somepalli_diffusion_2022}.
+For the exploration of object-level memorisation, more complex features are relevant, including embeddings derived from CLIP or features extracted from copy-detection models, like Self-Supervised Descriptor for Image Copy Detection (SSCD)~\cite{radford_learning_2021, pizzi_self-supervised_2022}.
+
+To this date, several, partially contradicting, theories have been formulated on why memorisation occurs in complex, generalised models.
+Some works argue that the memorisation capability can be primarily attributed to duplicates in the training sets~\cite{wen_canary_2023}. 
+However, it has been shown that de-duplication does not eliminate the memorisation problem ~\cite{somepalli_understanding_2023, carlini_extracting_2023}. 
+In the other works, during data extraction, outliers were also shown to be among vulnerable instances~\cite{carlini_extracting_2023, burg_memorization_2021}.
+Other factors that have been found to play an important role in the memorisation behaviour include text conditioning in text-to-image models~\cite{somepalli_understanding_2023}, skewness in the distribution of image repetitions in the training set and the number of gradient updates during training being large enough to enable overfitting on a subset of data~\cite{somepalli_diffusion_2022}. Moreover, conditional diffusion models, where the generation is conditioned on a particular class as opposed to generation from whole training set distribution or guided by text prompt in text-to-image models, demonstrated an increased capacity for memorising images in comparison to their unconditional alternative~\cite{gu_memorization_2023}. 
+Furthermore, the dataset size has a crucial impact on the feasibility of replicating images.
+This relates to the model's learning capacity, which is influenced by the size of the model and the complexity of the model's architecture. If the dataset size is not big enough for the capacity of the diffusion model, the model will likely fail to generalise. This also applies on a class level, where the model generates novel images from well-represented classes but memorises samples from a minority class~\cite{yoon_diffusion_2023}.
+
+Generally, the works mentioned above~\cite{somepalli_diffusion_2022, somepalli_understanding_2023, carlini_extracting_2023, carlini_extracting_2021} are prone to underestimate the memorisation behaviour of generative models because of computing limitations that would (i) allow comparison with entire training sets of large diffusion models, and (ii) the limitations and inconsistencies of detection methods, i.e. not being able to find some memorised samples due to the missing capability of capturing examples that have semantic relevance, but are not detectable with current simple metrics. % also maybe mentioning the difference of more real-world replication and how it compares to induced memorization when we know the prompts from LAION  - (somepalli,carlini) (redact and also change place of this mention) current extraction scenarios consider cases where the original text prompts of training data are known and hence serve as a key to memory of the model 
+% Among different setups considered in current research we should also differentiate induced memorization where we search among known original text prompts of training data and the scenario ...
+Large diffusion models are trained on billions of images -- for example, Stable Diffusion uses several versions of the LAION dataset, with the largest of those ranging around 5 billion images\footnote{\url{https://laion.ai/blog/laion-5b/}} -- and hence, finding matches in the entire set is infeasible. To overcome this obstacle, the search is often limited to arbitrary subsets of data, duplicates, outliers, or fine-tuning sets. Further, used detection methods vary between research, depending on the data complexity, sometimes using arbitrary thresholds for match candidates. This poses a challenge to what we count as memorisation and how to quantify and compare it across models and data.
+% \textit{image retrieval} (inexact copy detection) - a recent SOTA approach is a Self-Supervised Descriptor for Image Copy Detection (SSCD)~\cite{pizzi_self-supervised_2022} and another, MultiGrain~\cite{berman_multigrain_2019}. Similarity-based image retrieval is closely related to copy detection, although the matching criteria are less stringent for retrieval.
+Regardless, trends can be observed between different types of models. Carlini et al.~\cite{carlini_extracting_2023} and Akbar et al.~\cite{akbar_beware_2023} show that GANs are, for instance, substantially less prone to memorisation compared to diffusion models.
+%Diffusion models leak more than twice as much training data as GANs~\cite{carlini_extracting_2023}. 
+This might be because the generators of GANs are only trained using a very high-level abstraction of training data (i.e. using gradients from the discriminator) and therefore never receive training data as input, unlike diffusion models, which directly process noised training images many times through training.
+
+An interesting phenomenon is that the set of inputs regenerated by GANs and the set regenerated by diffusion models greatly overlap, i.e. a large portion of the memorised train images are memorised by both types of models. This may 
+indicate that the mitigation strategies should be, at least partially, directed towards preprocessing the training set.
+
+Generative language models also exhibit memorisation behaviour. Particularly, the capacity of LLMs to memorise is an active area of research, focused on exploring methods for recovering texts present in the training corpus or techniques to audit the models by extracting artificially injected texts called \textit{canaries}~\cite{carlini_secret_2019}. The replication occurs even in models that are not overfitting to their training data~\cite{tirumala_memorization_2022,jagielski_measuring_2023}. 
+The amount of replicated data from language models is generally proportionate to (i) the size of the model, (ii) duplicates in the text data, and (iii) the prompt length~\cite{carlini_quantifying_2023,carlini_extracting_2021}. The information that can be extracted differs from that for images, as from the text data we can obtain personally identifiable information such as names, phone numbers, and email addresses. Additionally, not only single pieces of information can be leaked, but also longer verbatim sequences, like source code and articles~\cite{carlini_extracting_2021}. While extraction commonly focuses on exact text sequences, some studies consider more approximate memorisation aspects, such as algorithms, writing styles~\cite{hartmann_sok_2023} or levels of plagiarism~\cite{lee_language_2023}.
+
+%easier to compare because of data dimensionality? usuallly verbatim sequences but also tries to test for approximate? test about plagiarism/idea memorisation here https://arxiv.org/pdf/2203.07618.pdf
+
+%TODO: the message of the following paragraph is not clear to me; to some extend, it reads like it is an orthogonal topic, and not really causing an IPR issue; or is it? Maybe clarify that 
+%(Tanja) -- yes it is the orthogonal problem which is (or can be) related to IPR; the text that follows ("It is important to note that membership inference...") highlights this relation. I think with a few of the recent edits this is fairly clear now, or?
+Memorisation is largely studied in the light of \textit{membership inference attacks}, where the adversary's goal is to infer whether a particular data sample was part of the training set for a given model. Membership inference has first been discussed for supervised machine learning models (such as classification or regression models)~\cite{shokri_membership_2017}, but has later been expanded to GAI models as well~\cite{webster_this_2021,hu_membership_2023,matsumoto_membership_2023}.
+Another attack exploiting the memorisation capabilities is the \textit{model inversion attack}~\cite{fredrikson_model_2015}, where the objective of the attacker is to recreate one or more (not publicly shared) training samples used to train the target model\cite{yin_dreaming_2020,ghiasi_plug-inversion_2022,carlini_extracting_2023}. 
+%While this is a problem out of the scope of this paper, 
+It is important to note that membership inference can be performed by reconstructing the original training data from the model outputs (i.e. via model inversion), hence both lines of work produce highly relevant insights for intellectual property protection of training data.
+In the context of GAI, these attacks build on directed prompt crafting to produce a desired outcome, while violation of IPR can occur by models spontaneously generating the training set replicas without malicious intentions of the end-user.
+%One of them is that 
+
+\subsubsection{Content-style disentanglement}
+% todo
+%Motivation from \cite{wu_uncovering_2023}.
+A concept in the realm of image generation models closely related to style transfer and mimicry is disentanglement. This property allows for the separation of attributes within the generated image, allowing for targeted modifications of specific aspects like style without changing the image content. Disentangling style from content enables the application of a particular image or artist's style to another image.
+Disentanglement is an inherent property of some models such as GANs and diffusion models, which allows for image editing without any additional learning. Disentanglement can be simply done by exploiting the learned latent representation of the generator in a GAN~\cite{collins_editing_2020, harkonen_ganspace_2020} or, for text-to-image diffusion models such as Stable Diffusion, replacing the text embedding with desired modification at later denoising steps during the reverse diffusion process~\cite{wu_uncovering_2023}. This preserves the semantic content of the original image while shifting it toward the target style. The inherent disentanglement capability does not require fine-tuning the model as opposed to the task of disentanglement representation learning~\cite{higgins_towards_2018} for more controlled editing. 
+Current works on representation disentanglement learning are mainly focused on unsupervised techniques incorporating encoders and modified loss functions into optimisation such as content-preservation loss and style-disentanglement loss~\cite{yang_disdiff_2023, wang_stylediffusion_2023, kwon_diffusion-based_2023, kazemi_style_2018}. %provide more citations, add for GANs
+A widely adopted practice is the incorporation of Adaptive Instance Normalisation (AdaIN)~\cite{huang_arbitrary_2017} layers into the architecture of GANs as it carries the style information of images~\cite{kazemi_style_2018, kwon_diagonal_2021, xu_drb-gan_2021}.
+It is worth noting that content-style disentanglement is evaluated for other contexts than artistic styles as well, like attributes of faces or fashion items.
+
+In the context of art style transfer, inherent disentanglement is possible if a representative number of style images is already present in the training data of a model. On the other hand, the specific style of an arbitrary image can be learned, extracted, and applied to desired content through various adaptations of GANs~\cite{kaneko_cyclegan-vc2_2019, liu_artsy-gan_2018, kazemi_style_2018} and diffusion models~\cite{wang_stylediffusion_2023, wu_not_2023}. However, in case of a more complex representation of the artist's style, a collection of images can be used for collection style transfer enabling to capture variations of the artist's work~\cite{kotovenko_content_2019, xu_drb-gan_2021}.
+
+
+\input{taxonomy} %in progress: adjusting
+
+
+Recently, Lu et al.~\cite{lu_specialist_2023} demonstrated a method called Specialist Diffusion, a few-shot fine-tuning of Stable Diffusion for content-style disentanglement, specifically designed for synthesising known objects in unknown styles. Here, unknown styles refer to the styles that were not present in the training data. With this method, less than 10 images of any artist suffice to capture their unique aesthetic and create novel images in the same fashion.
+
+
+%wang et al 2023 - StyleDiffusion: Controllable Disentangled Style Transfer via Diffusion Models (neural style transfer for diffusion, using CLIP loss, ) - nicely defined next to Wu et al. paper
+%HOW WU DOES IT:"...disentangled image modifications can be achieved by partial modifications in the text embedding space. In particular, if we fix the standard Gaussian noises introduced in the denoising process, and partially change the input text embedding from a neutral description (e.g., “a photo of person”) to one with style (e.g., “a photo of person with smile”), the generated image will also shift towards the target style without changing the semantic content"
+%we optimize the mixing weights of the two text embeddings under two objectives, a perceptual loss for content preservation and a CLIP-based style matching loss. The entire process only involves optimizing over around 50 parameters and does not fine-tune the diffusion model.
+
+%\subsubsection{Concept sparcity}~\cite{shan_prompt-specific_2023}   
+% todo
+%tldr: the dataset so large that we have maybe 0.2% of samples to represent each concept. very long tail distribution. mentioned in relation to data poisoning attacks on stable diffusion
+% todo: search for different literature mentioning the effect - likely not found (after first search)
+% how it relates: if the concepts are so sparse in the training data its easier to access them during inference via text prompt (key to memory) and generate specific artist style?
+% 0.2% of the data is still hundreds of thousands of images if we consider LAION
+% whats the conclusion here? all artists whose work is in the training data are prone to regeneration by SD? this is not proven. more images per concept would make the dataset less sparse and that would protect the artists better? 100k is a large number of images, even though it constitutes 0.0002% of the whole 5BLAION
+
+%\section{Taxonomy of IP protection techniques}
+% A range of potential IP violations of the training data caused by generative models resulted in different attempts to mitigate threats coming from different stakeholders. 
+% These methods differ on the following key axes:
+%     (i) mode of protection
+%     (ii) target model
+%     (iii) phase of protection and
+%     (iv) objective.
+% \subsection{Mode of protection}
+% The mode of protection describes the type of protection in a broad sense, i.e. the type of action taken towards achieving IP protection. 
+% The first category is \textit{sanitisation of the training dataset}, which requires direct access to the training set and modifying the underlying data with the goal of preventing IP violations further down the AI generation process. 
+% These methods and their more detailed classification are described in \Cref{sec:mitigation-sanitising}. 
+% A second category of methods relies on different forms of \textit{adversarial perturbations}. 
+% These perturbations are applied to specific samples that need to be protected, and they cause the targeted behaviour in the downstream generation process. These methods are further described in \Cref{sec:mitigation-adversarial}.
+% As the third category, we consider methods modifying the model parameters, which rely on re-training or fine-tuning the model; hence, these methods require access to the training process. These are described in \Cref{sec:mitigation-concept}.
+% As a fourth category, we identify passive methods, which are those that do not modify the data collection, training or generation process, but can rather serve as a \textit{detection} of potential violations. We provide details about these methods in \Cref{sec:mitigation-detection}.
+% Furthermore, protection against IP violation is in some cases addressed via content policies of e.g. generative AI providers or content publishing sites. 
+% These policy-based methods are mentioned in \Cref{sec:mitigation-ethical}.
+
+% \subsection{Target model}
+% Different generative models generally require different approaches for protection. The body of proposed protection methods is designed for \textit{Diffusion Models (DMs)} (often more specifically, Latent DMs), \textit{Generative Adversarial Networks} (GANs), and \textit{Large Language Models } (LLMs).
+% \textit{Model-agnostic methods}, for example, those not modifying the training or synthesis process, can in principle be applied regardless of the underlying model.  
+
+% \subsection{Phase of application}
+% IP protection methods all affect the learning of generative models or the generation process in some way, but they can be applied in different phases throughout the entire content lifecycle.
+% The earliest phase where methods can be applied is during \textit{content sharing}. 
+% This encompasses methods whose effectiveness relies on being applied before the content is collected for training the model. 
+% A later phase of application of protection methods would be \textit{training} and \textit{fine-tuning} the model, as well as the application at \textit{inference} (generation) time. 
+% Finally, some methods are applicable\textit{ post-hoc}, meaning that the potential violations already occurred, i.e. the data has been already scraped without authorisation, or the problematic content has been generated. 
+
+% \subsection{Objective}
+% The objectives of protection methods are tightly related to the potential IP violations they aim to address. 
+% Some objectives address data collection, for instance, \textit{preventing the usage} of certain data samples ad-hoc or \textit{detection of participation} as a post-hoc method. Detection of participation implies determining whether specific samples were part of the training set (without authorisation). 
+% Some objectives are rather focused on how the protected content impacts the generative models. This includes \textit{preventing the synthesis} of certain content or \textit{disrupting the synthesis} process by compromising the quality of the generated content.
+% Finally, \textit{reducing memorisation} as an objective aims to reduce the undesired behaviour of the model that can lead to potential violations even from benign usages of generative models.
+
+\section{IP protection techniques}\label{sec:mitigation}
+In this section, we provide an overview and systematisation of state-of-the-art protection techniques for intellectual property rights of training data used for generative models.
+\Cref{fig:taxonomy} presents the taxonomy described in \Cref{sec:mitigation-taxonomy} and the categorisation of the protection methods.
+These different categories (shown as the leaf nodes of \Cref{fig:taxonomy}) will be further described and discussed in \Cref{sec:mitigation-categories}.
+Beyond the technical approaches, protection against IP violation is oftentimes addressed via content policies of e.g. generative AI providers or content publishing sites. 
+We discuss these policy-based methods \Cref{sec:mitigation-ethical}.
+
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/taxonomy.drawio.pdf}
+%     \caption{Taxonomy of IP protection methods for training data in GAI.}
+%     \label{fig:taxonomy}
+% \end{figure*}
+
+\subsection{Taxonomy}\label{sec:mitigation-taxonomy}
+Our proposed taxonomy is shown \Cref{fig:taxonomy}. We distinguish the methods along their characteristics of the \textit{protection mode}, the \textit{phase of application}, and their \textit{granulartiy}, as follows:
+\subsubsection{Mode of protection}
+Mode of protection is the categorisation based on a broader objective towards addressing IP violations. 
+It includes:
+\begin{itemize}
+    \item \textit{Prevention}: methods that include actions taken to mitigate or avoid potential IP violations  
+    \item \textit{Detection}: methods that aim to observe and identify potential IP violations after they occur
+\end{itemize}
+\subsubsection{Phase of application}
+Protection methods may be applied at different stages of the GAI lifecycle. 
+For \textit{prevention} methods we differentiate:
+\begin{itemize}
+    \item \textit{Data sharing} phase -- methods are applied to the training data in the sharing phase before they are used for training a GAI model
+    \item \textit{Model training/fine-tuning} -- methods are applied during model training or fine-tuning
+    \item \textit{Inference} -- methods are applied at inference without interfering with the training process
+\end{itemize}
+\subsubsection{Granularity}
+This categorisation distinguishes between the entities in the GAI process that the method is applied to take effect in protecting the training data. 
+This includes:
+\begin{itemize}
+    \item \textit{Dataset}: these methods focus on modifying the training dataset as a whole to achieve protection
+    \item \textit{Sample}: IP protection is achieved by directly applying a method on the sample of interest
+    \item \textit{Concept}: IP protection targets certain features representative of a concept, rather than a single input sample. A concept is an abstraction of a set of input samples that belong under the same arbitrary category; an example of a concept in the IP protection context is an artistic style.
+    \item \textit{Model}: methods target the model and its behaviour, without interaction with the data, to achieve the IP protection of training data
+    \item \textit{Prompt}: methods target the textual prompt, typically modifying it at inference time
+\end{itemize}
+
+According to these three levels of categorisation, we identify seven types of protection techniques, as shown in \Cref{fig:taxonomy}. 
+% The first category is \textit{Dataset sanitisation}, which requires direct access to the training set and modifying the underlying data before any training can take place -- with the goal of preventing IP violations further down the AI generation process. 
+% These techniques are described in \Cref{sec:mitigation-sanitising}, where we also provide a more detailed classification into sub-categories. 
+
+% Secondly, some methods use different forms of \textit{adversarial perturbations}. 
+% These perturbations are applied to specific samples that need to be protected, and they cause the targeted behaviour in the downstream generation process. These methods are further described in \Cref{sec:mitigation-adversarial}.
+
+% Thirdly, \textit{unlearning} and \textit{concept removal} as two distinct categories modify the model parameters; they rely on re-training or fine-tuning the model, hence they require access to the training process. These are described in \Cref{sec:mitigation-concept}.
+
+% The umbrella term of \textit{watermarking} includes proactive detection techniques that modify the dataset, samples or concepts to ease later detection; these are described in \Cref{sec:mitigation-watermarking}.
+
+% Finally, two groups of reactive detection methods do not modify the data collection, training or generation process but can rather serve as detection of potential violations (\textit{analytical attribution}) or an indicator that the additional preventive methods should be applied (\textit{testing memorisation}). We provide details about these methods in \Cref{sec:mitigation-detection}.
+
+\input{tables/terminology} 
+
+
+\begin{itemize}
+    \item \textit{Dataset sanitisation} requires direct access to the training set and modifying the underlying data before any training can take place -- with the goal of preventing IP violations further down the AI generation process.
+    These techniques are described in \Cref{sec:mitigation-sanitising}, where we also provide a more detailed classification into sub-categories. 
+    \item \textit{Adversarial perturbations} as prevention techniques are applied to specific samples that need to be protected, and they cause the targeted behaviour in the downstream generation process. These methods are further described in \Cref{sec:mitigation-adversarial}.
+    \item \textit{Unlearning} and \textit{concept removal} methods modify the model parameters and rely on re-training or fine-tuning the model, hence they require access to the training process. These are described in \Cref{sec:mitigation-concept}.
+    \item \textit{Watermarking} techniques are proactive detection techniques and are described in \Cref{sec:mitigation-watermarking}.
+    \item \textit{Analytical attribution} is one of the reactive detection methods that do not modify the data collection, training or generation process but can rather serve as detection of potential violations, while another reactive detection method, \textit{testing memorisation}, can be used as an indicator that the additional preventive methods should be applied. We provide details on these methods in \Cref{sec:mitigation-detection}.
+\end{itemize}
+
+% Some of these methods are specialised for certain types of models, e.g. diffusion, GANs or LLMs, etc. and differ in what type of violation is mitigated and the phase of their application. 
+
+
+% Many mitigation techniques are oriented towards diffusion models and text-to-image models in general, perhaps because of the great popularity of this technology over the last few years, and ongoing criticism from the artist. Arguably, the image domain is more prone to copyright issues due to the nature of human perception towards visual art compared to, for example, language models and literary art.  
+% The earlier phase of method application is content sharing. This encompasses those methods whose effectiveness relies on being applied before the content is collected for model training. 
+% Those applied during \textit{training} generally rely on modifying the training data, and by \textit{fine-tuning} the weights of the model are being calibrated. Methods can be applied at the \textit{inference time}, e.g. sanitising the user prompts and finally \textit{post-hoc}, after the potential violations have already occurred.
+
+These categories are summarised in \Cref{tab:terminology}. Literature is not coherent in terminology for these protection categories; we, therefore, provide a common nomenclature in this paper.
+To this end, we identify terms which are
+used synonymously and reference the respective publications.
+
+%TODO: Would be nice to have something similar for attacks as well? or are there too few methods that remove a protection method yet? some of them are inline in the text, I know, but maybe it would be good to group them together
+
+
+\subsection{Categorisation of IP protection methods}\label{sec:mitigation-categories}
+In the following, we classify the protection mechanisms we identified in our systematic literature search with the help of the taxonomy introduced above (cf. \Cref{fig:taxonomy}).
+
+\subsubsection{Sanitising training dataset and prompt modification}\label{sec:mitigation-sanitising}
+% de-duplicating training data + image caption modification --> sanitising training data
+These techniques rely on the ability to modify the training data before it is released or used for model training and modifying prompts at inference time.
+\paragraph{De-duplicating training data} 
+Current models are trained on massive datasets scraped from the internet containing billions of multimedia objects. This naturally includes several duplicates, e.g. if photos are re-used in multiple news articles, and especially also near (approximate) duplicates, which might differ just in metadata (image headers), formats, minute cropping or other non-invasive transformations. 
+We discussed in \Cref{sec:memorisation} that duplicated samples (e.g., more than 100 times) are easier to replicate for diffusion models~\cite{carlini_extracting_2023}, GANs and language models~\cite{carlini_extracting_2021,kandpal_large_2023}.
+The problem of duplicates is prominent - for the two-billion version of the LAION image dataset ("LAION-2B"), roughly 700 million images are reported to be duplicates~\cite{webster_-duplication_2023}.
+De-duplicating is hence a mitigation step of removing the exact or approximate duplicates from the training set with the goal of mitigating the memorisation. 
+
+Detecting near-duplicates is challenging, as the search space is big. 
+To address this issue, de-duplication can be addressed either by restricting to removing exact duplicates, or by using a proxy measure for near-duplicates, such as matches found with more advanced methods such as CLIP similarity~\cite{radford_learning_2021,webster_-duplication_2023}, i.e. similarity in a latent space. 
+Once duplicates are identified, this method is straightforward and can significantly reduce the number of replicas generated at inference time e.g., \cite{carlini_extracting_2023} has shown up to a 23\% decrease in replicas for diffusion models). 
+Memorisation, however, cannot be fully alleviated by de-duplication alone as other factors, such as image caption specificity, the size of a dataset and length of training, contribute to the memorisation behaviour~\cite{somepalli_understanding_2023}.
+% the trend of replication in diffusion models depends strongly on additional factors, related especially to their conditioning and to dataset complexity.
+% e.g. "Caption specificity is closely tied to data duplication. Highly specific captions act like keys into the memory of the diffusion model that retrieve specific data points"
+
+% \textit{Undesirable image removal. Previous work to avoid
+% undesirable image output in generative models has taken
+% two main approaches: The first is to censor images from the
+% training set, for example, by removing all people [25], or by
+% more narrowly curating data to exclude undesirable classes
+% of images [39, 27, 33]. Dataset removal has the disadvantage
+% that the resources required to retrain large models makes it
+% a very costly way to respond to problems discovered after
+% training; also large-scale censorship can produce unintended
+% effects [26]. The second approach is post-hoc, modifying
+% output after training using classifiers [3, 21, 29], or by adding
+% guidance to the inference process [38]; such methods are
+% efficient to test and deploy, but they are easily circumvented
+% by a user with access to parameters [43]. We compare both
+% previous approaches including Stable Diffusion 2.0 [30],
+% which is a complete retraining of the model on a censored
+% training set, and Safe Latent Diffusion [38], which the stateof-the-art guidance-based approach. The focus of our current
+% work is to introduce a third approach: we tune the model
+% parameters using a guidance-based model-editing method,
+% which is both fast to employ and also difficult to circumvent.}- from "Erasing concepts"
+
+\paragraph{Image caption modification}\label{sec:mitigation-sanitising-caption} % check if more info or papers relevant
+% found very relevant one, but questioning its legitness - https://arxiv.org/abs/2309.07254
+% figure
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{figures/caption-modification.PNG}
+%     \caption{\textbf{Caption modification}: The most successful mitigation strategies for Stable Diffusion - \textit{multiple captions} for train time and \textit{random token/number addn.} for inference time. The top column represents train samples, the middle column is the memorised image and the bottom row is the generation with a mitigation strategy applied.~\cite{somepalli_understanding_2023}}
+%     \label{fig:caption-modification}
+% \end{figure*}
+\begin{figure*}
+    \centering
+\hspace*{\fill}
+  \subfloat[\label{fig:whitebox-workflow}Train time: multiple captions]{%
+       \includegraphics[height = 4cm]{figures/caption-modification_training.PNG}}
+    \hfill
+  \subfloat[\label{fig:blackbox-workflow}Inferene time: random token replacement / addition]{%
+        \includegraphics[height = 4cm]{figures/caption-modification_inference.PNG}}
+        \hspace*{\fill}
+    \caption{\textbf{Caption modification}: The most successful mitigation strategies in ~\cite{somepalli_understanding_2023} against replication in Stable Diffusion: (a) \textit{multiple captions} for train time and (b) \textit{random token / number addition} for inference time. The top column represents train samples, the middle column is the memorised image, and the bottom row is the generation with a mitigation strategy applied.}
+    \label{fig:caption-modification}
+\end{figure*}
+
+
+
+% why this is a mitigation strategy
+The memorisation capabilities of text-to-image models are amplified when duplicated training images also come with duplicated image captions. 
+By de-duplicating the image captions, the replication of training samples in generative models can be significantly reduced (even if no training image de-duplication has been performed). 
+
+In \cite{somepalli_understanding_2023}, the authors propose several techniques for reducing data replication by randomising and augmenting image captions in the training set. 
+These strategies can be applied at train time to increase caption diversity among duplicates, but also at inference time which we discuss in the next paragraph.%or at inference time to disrupt the memorised connection between a caption and an image, 
+These strategies include: 
+\begin{itemize}
+    \item Multiple captions: for instance, using some of the pre-trained vision-language frameworks for generating synthetic captions (e.g., BLIP~\cite{li_blip_2022})
+    \item Adding a small amount of Gaussian noise to text embeddings
+    \item Random caption replacement: replacing the existing caption of an image with a random sequence of words
+    \item Random token replacement and addition: randomly replace words in the caption with a random word, or add a random word to the caption at a random location
+    \item Random word repetition: repeat a random word from a caption at a random location of the same caption
+    \item Random numbers addition: add a random number at a random location in the caption
+\end{itemize}
+While all proposed strategies reduce the similarity of the generated images to the corresponding training sample to some extent, \cite{somepalli_understanding_2023} showed that for Stable Diffusion, the most effective strategy is introducing \textit{multiple captions} at train time, and \textit{random token replacement/addition} at inference time; both strategies are shown in \Cref{fig:caption-modification}.
+
+Another caption modification method was proposed in ~\cite{li_mitigate_2024}. 
+In order to mitigate replication, they generalise image captions to reduce specificity, as highly specific captions can act as keys to the memory of the model. 
+The generalisation is done by an LLM, specifically, GPT-3.5, guided by the prompt containing instructions for generalisation. 
+Additionally, they utilise an additional fusion dataset to sanitise the original data. 
+This is done by combining the text embedding of the generalised caption with text embedding from a randomly selected image from the fusion dataset, which is also done with the corresponding image encodings. This augmentation strategy increases the diversity of the data and reportedly reduces the replication rate.
+
+
+\paragraph{Prompt modification}\label{sec:mitigation-sanitising-prompt}
+Post-hoc methods that do not modify the models or data, but rather change the textual prompts in T2I generation fall under \textit{prompt modification} methods.
+These generally include rephrasing the textual prompt to increase the diversity of generated content and prompt moderation to prevent specific (e.g. harmful or copyright-violating) content from being generated. 
+
+The strategies for modifying image captions by Somepalli et al.~\cite{somepalli_understanding_2023} mentioned in the previous paragraph are also applied at inference time to the prompt, to disrupt the memorised connection between a caption and an image and hence reduce the replication of training samples. 
+For prompt modification at inference time, the most effective strategy is \textit{random token replacement or addition}, shown in \Cref{fig:caption-modification}.
+This way, data replication is significantly reduced. 
+Another goal is preventing the generation of certain concepts.
+Prompt-checkers at inference time achieve this by identifying and rejecting malicious prompts~\cite{hanu_detoxify_2020,noauthor_openai_2023}.
+These methods hence require lists of malicious concepts and labelled datasets (often relying on user feedback) to train classification models that effectively classify malicious content. 
+OpenAI Moderation~\cite{noauthor_openai_2023}, for instance, includes categories of malicious content such as hate, harassment and violence and employs a language model to e.g. remove or generalise the names of public figures. 
+A challenge of prompt modifying techniques is dealing with unseen malicious content, although extending it is rather simple and does not require retraining the model.
+ 
+
+% \subsection{Input filtering}
+% Input filtering as memorisation mitigation in diffusion models
+
+% midjourney prevents the generation of known copyrighted data (Steve McCurry):\url{https://ceoln.wordpress.com/2022/12/16/some-light-infringement/}. The drawback of these filters is that they can be easily circumvented (Rando et al., Wen et al.) and the solutions are anyway just a patch and do not scale
+
+% \subsection{Machine unlearning}
+% Machine unlearning~\cite{sekhari_remember_2021,neel_descent--delete_2020,zhang_forget-me-not_2023,golatkar_eternal_2020,baumhauer_machine_2022} has firstly been proposed for addressing \textit{Right to be forgotten?} - the right to opt out of large datasets where personal data has been used without the consent of its subject. 
+% The concept hence draws the motivation from user privacy protection, but has applications beyond that, e.g. erasing inaccurate or outdated information or removing harmful, manipulated data or outliers and copyright protection. 
+% The aim of machine unlearning is to modify a model to behave as if specified training data has not been present, hence the list of training samples is required as an input to these methods. 
+% The challenge of machine unlearning is achieving an acceptable trade-off between loss in the utility of the model and success of forgetting. 
+% \textit{The possibility of such exact memorization has driven privacy and copyright concerns
+% and has led to work in machine unlearning [40, 4, 15], which
+% aims to modify a model to behave as if particular training
+% data had not been present. 
+%However, these methods are based
+%on the assumption that the undesired knowledge corresponds
+%to an identifiable set of training data points. The problem we
+%tackle in this paper is very different from the problem of unlearning specific training data because rather than simulating
+%the removal of a known training item, our goal is to erase a
+%high-level visual concept that may have been learned from a
+%large and unknown subset of the training data, such as the
+%appearance of nudity, or the imitation of an artist’s style}-from "Erasing concepts"
+% Machine unlearning has applications beyond protecting user privacy. For instance, one can use unlearning to erase inaccurate or outdated information from trained models (e.g., due to errors in labeling or changes in the environment) or remove harmful, manipulated, or outlier data.
+
+%Forgetting concepts: Forget-me-not~\cite{zhang_forget-me-not_2023}
+
+\subsubsection{Adversarial perturbations}\label{sec:mitigation-adversarial} % old: cloaking
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/glaze.PNG}
+    \caption{\textbf{Cloaking} via Glaze~\cite{shan_glaze_2023}: columns 1-2 show original artwork from three artists; column 3 depicts results from style mimicry using Stable Diffusion; column 4 is the representation of the target, "cloak" style; columns 5-6 are (failed) attempts of style mimicry based on the cloaked artwork}
+    \label{fig:cloaking}
+\end{figure*}
+Content owners can actively protect their intellectual property from GAI through a strategic application of adversarial examples. 
+% what are adversarial examples? - citations. 
+Adversarial examples~\cite{goodfellow_explaining_2015} are inputs to machine learning models in the inference stage that are deliberately designed to cause the model to make a mistake. 
+They employ changes to input data that are generally imperceptible to humans and target the learned features and decision boundaries, ultimately leading to incorrect outputs at the inference time. 
+Drawing the motivation from the well-researched realm of adversarial examples for discriminative models, %zhang_adversarial_2020}, %carlini&wagner2017,adry2018 
+Liang et al. introduce adversarial examples for generative models~\cite{liang_adversarial_2023} with their method called AdvDM.
+Unlike when applied against classification models, where adversarial examples aim to cause misclassification, against diffusion models, adversarial examples disrupt the generation process, by preventing features from being extracted. 
+This property of adversarial examples enables a direct application in safeguarding intellectual property in the domain of AI-generated content: employing adversarial perturbations can cause the models to fail to reproduce or learn from the specific style of the protected artworks and/or cause low-quality generated content. 
+Across the literature, these modifications have been named differently, due to the rapid concurrent development and the ensuing lack of a standard terminology. For instance, the modifications may be referred to as \textit{adversarial perturbations}~\cite{liang_adversarial_2023,liang_mist_2023}, \textit{adversarial noise}~\cite{zhao_unlearnable_2023}, \textit{watermark}~\cite{ye_duaw_2023}, \textit{style cloak}~\cite{shan_glaze_2023}; the method of applying these modifications has been dubbed \textit{immunisation}~\cite{salman_raising_2023}, \textit{cloaking}~\cite{shan_glaze_2023} or \textit{poisoning}~\cite{liu_toward_2023}. 
+ 
+AdvDM~\cite{liang_adversarial_2023} is a method to create these adversarial examples designed against diffusion models and utilises the training loss of these models, referred to as \textit{semantic loss}. 
+This semantic loss aims to shift the image representation away from the semantic space of the model, leading to the production of images with chaotic content when generated by the model.
+%add how optimising this loss implies targeting the diffusion process of the DM
+In their subsequent work, Liang and Wu introduce Mist~\cite{liang_mist_2023}, a method that significantly improves transferability and robustness of adversarial examples across different diffusion model applications, by optimising a novel adversarial loss term, \textit{textural loss}\footnote{The authors interchangeably use textural and textual loss for describing the same loss; we believe that the correct term is textural loss as this loss exhibits modifications in \textit{textural} characteristic on the image background}. 
+Textural loss represents the distance between the encoded representation of the original image and the representation of the perturbed image in the latent space of latent diffusion models. 
+The adversarial example is then generated by adding subtle perturbation to the image to maximise the textural loss. As this approach targets the encoder, it can thus only protect against Latent diffusion models. % add how optimising textural loss implies targeting the encoder and the latent representation of the input, hence it can exclusively be applied to LDMs
+The method of creating Unlearnable Diffusion Perturbation (UDP)~\cite{zhao_unlearnable_2023} further increases the distortions in the generated content in order to deter from usage of these images for training or fine-tuning the diffusion models. 
+To achieve the unlearnable effect, the design objective is to increase the distance between the distribution of generated images and the distribution of clean training data as much as possible by adjusting the protective noise.
+Based on the observation that the existing adversarial attacks introduce an additional error to the score function predicted by LDMs which in turn leads to biased predictions on these adversarial examples, Zheng et al.~\cite{zheng_understanding_2023} propose Attacking with Consistent score-function Error (ACE).
+ACE standardises the pattern of the extra error added to the predicted score function. 
+This forces the fine-tuned LDM to learn a consistent pattern as a bias when predicting the score function, contributing to the effectiveness of the method.
+
+Glaze~\cite{shan_glaze_2023} also aims at misleading generative models from accurately mimicking the specific artist's style, by perturbations that are optimised to shift the image representation in latent feature space, similar to the idea of textural loss in Mist.
+Glaze, however, targets specifically the style features instead of compromising the quality of the generated output. 
+To this end, they first apply style transfer to the original art. 
+Style transfer modifies the original image to adopt the appearance of a different style - the target style -- while retaining the content from the original art. 
+The perturbation, named style cloak, is then obtained by minimising the distance between the feature representation of the original and the style-transferred image.
+As a result, the applied perturbations are not recognisable by humans, but the model will generate a recognisably different style when prompted to generate art in the victim's style. This is illustrated in \Cref{fig:cloaking}. 
+
+Ye et al. propose their Data-free Universal Adversarial Watermark (DUAW)~\cite{ye_duaw_2023}. 
+DUAW disrupts the variational autoencoder in Stable Diffusion models, ensuring that images altered by the adversarial perturbation (the authors call this "watermark") produce significantly distorted outputs when used for model customisation (customised text-to-image generation (CT2I)), e.g. with approaches like DreamBooth~\cite{ruiz_dreambooth_2023} or LoRA~\cite{hu_lora_2021}. 
+Hence, this method, besides rendering an artistic style unrecognisable, also disrupts the model as a result of the unauthorised usage of protected input. 
+Unlike the previous methods, DUAW operates without direct access to the images to be protected, using synthetic data for optimising the adversarial perturbation instead. 
+Nightshade~\cite{shan_prompt-specific_2023} takes a step further into degrading the quality of generated output from a text-to-image model as a goal of this method is to prevent training on unauthorised data, which shall serve as a strong disincentive to disregard the copyright notices and opt-out choices. 
+The authors first demonstrate that despite the massive datasets used in training diffusion models, these are vulnerable to poisoning attacks targeting specific prompts. 
+Based on this observation, Nightshade uses a small number of perceptually identical poison samples to corrupt the response of a model to specific prompts. 
+The protection method shows large effects on related concepts and hence destabilises general features in the model, affecting its overall image generation ability.
+
+Anti-DreamBooth~\cite{van_le_anti-dreambooth_2023} and MetaCloak~\cite{liu_toward_2023} are black-box approaches based on training surrogate models to optimise the perturbations, where the objective is to force the target model to overfit on these perturbations in the fine-tuning stage. These methods are designed specifically for the unauthorised CT2I scenario.
+
+Adversarial perturbations have shown to be effective against unauthorised instruction-guided image editing (e.g. Instruct-Pix2Pix~\cite{brooks_instructpix2pix_2023}),
+by ensuring that images manipulated with instruction-guided DMs result in unrealistic outcomes~\cite{chen_editshield_2023,salman_raising_2023}. 
+While copyrighted images and artworks may be subject to such edits, unauthorised editing implies a broader range of misuse, such as privacy issues and spreading misinformation. % maybe some citation here %TODO: and also some explanation why this is a privacy issue
+In terms of intellectual property, these methods protect the integrity of the original work. 
+
+Photoguard~\cite{salman_raising_2023} introduces two types of protection methods; (i) \textit{encoder attack} and (ii) \textit{diffusion attack}.
+The encoder attack perturbs the input image such that the VAE of an LDM maps the image to a wrong representation in the latent space, e.g., to the representation of a random noise image. This image used to shift the representation is called a \textit{target image}. 
+The generated image usually still preserves the information from the textual prompt so the approach is not as effective as a diffusion attack.
+The diffusion attack aims to perturb the input image so that the \textit{final} image generated by the LDM is a specific target image (e.g., random noise), hence targeting the full diffusion process, which includes the text prompt conditioning.
+Although the diffusion attack generates images that are closer to the target image, it is very computationally expensive, as the optimisation of the perturbations requires backpropagation through the full diffusion process.
+
+EditShield~\cite{chen_editshield_2023} employs an encoder attack (c.f. Photoguard) without a specific target image. 
+Instead, the approach is to maximise the distance of the perturbed representation from the original representation while constraining the amount of perturbations to keep them visually imperceptible. 
+They further introduce a method for finding universal perturbations for unauthorised image editing that can be applied to protect a large number of images, without having to find optimal perturbations for each image. %TODO: explain how it differs from DUAW, which is also universal, right? DUAW also attacks the autoencoder (btw, be more precise in writing, do you mean the same with autoencoder and encoder? or the later is just the encoder part of the autoencoder? if so, then what is the difference in targeting the encoder or autoencoder?
+
+\input{tables/adversarial-perturbations}
+Adversarial perturbation-based methods and their key properties are compared in \Cref{tab:adversarial-perturbations}. 
+We outline the \textit{method target}, i.e. the sub-process of a generative model that the adversarial modifications affect.
+The resulting \textit{distortions} in the generated content can be observed as two main types. 
+Firstly, the \textit{semantic distortions} render the objective of a malicious action ineffective, while keeping the overall quality of the generated image high. 
+For instance, keeping the content of an image while not adhering to textual prompts requesting a specific style of the generated image. 
+Secondly, \textit{graphical distortions} compromise the perceptual quality of the generated image. %TODO: can we say something about what is better / more useful? what is the advantage of graphical? it is overall worse? 
+
+The main challenge of protecting against style mimicry via adversarial perturbations is directing these perturbations such that they shift specifically those features related to the artistic style of the victim, i.e. achieving only semantic distortions, as the artistic style is very hard to be formally defined. 
+Glaze addresses this issue by employing style transfer before computing the perturbation to target only the style features, while other methods come with the cost of degrading the quality of the generated output (quality distortion).
+However, this cost can be seen as a desired consequence as it provides an additional layer of protection. 
+Larger disruptions in the generated content cover the broader range of violations, specifically, they protect against the unauthorised usage of copyrighted images in the training process. 
+The protection is especially effective in scenarios fine-tuning diffusion models (style transfer scenario), where the protected imagery has a more direct impact on the generated content~\cite{liang_mist_2023}.
+To be effective, all methods need to be applied to images before their usage in the model, whether it is training or customisation and editing. 
+This means that the responsibility of protection is put on content owners -- they need to apply these methods before sharing their content.
+This entails two challenges for effective and sustainable protection: (i) the level of awareness and education needs to be significantly increased to encourage the content owners (usually artists) to apply these methods before sharing their work online, and (ii) the GAI provider may circumvent the protective effects of adversarial perturbations with the release of new versions of generative models. 
+These can be addressed by shifting the responsibility to other stakeholders such as hosting platforms and AI providers and their collaboration. 
+As discussed in \cite{salman_raising_2023}, one instance of such collaboration may involve the AI provider offering the cloaking/immunisation APIs for their models and ensuring their forward compatibility with future versions.
+
+%\reminder[inline]{Adversarial examples for GANs (or other generative models in other domains) -- is there an evaluation on IP protection? If not, then just mention the techniques.}
+
+%\reminder[inline]{Notable mentions: papers that highly inspired the work in this category but do not evaluate on IP protection scenario. Such as Anti-DreamBooth - optimising adversarial wm to disrupt the diffusion process, preventing the representation learning process}
+% e.g. "Erasing concepts" paper compares their methods to SDM
+
+\subsubsection{Concept removal and unlearning}\label{sec:mitigation-concept}
+\begin{figure*}[ht]
+    \centering
+    % \includegraphics[width=0.9\textwidth]{figures/erasing-concepts.png}
+    \hspace*{\fill}
+    \subfloat[\label{fig:erasing-concepts:nudity}Erasing Nudity]{%
+        \includegraphics[width = .3\linewidth]{figures/erasing-concepts_a.png}}
+    \hfill
+    \subfloat[\label{fig:erasing-concepts:van-gogh}Erasing Artistic Sytle]{%
+        \includegraphics[width = .3\linewidth]{figures/erasing-concepts_b.png}}
+    \hfill
+    \subfloat[\label{fig:erasing-concepts:car}Erasing Objects]{%
+        \includegraphics[width = .3\linewidth]{figures/erasing-concepts_c.png}}
+    \hspace*{\fill}
+    
+    \caption{\textbf{Concept removal}: images generated without and with \textit{erasing concepts} method~\cite{gandikota_erasing_2023}}
+    \label{fig:erasing-concepts}
+\end{figure*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/ablating-concepts_vertical.png}
+    \caption{\textbf{Concept removal}: images generated without and with applying \textit{concept ablation}~\cite{kumari_ablating_2023}}
+    \label{fig:ablation}
+\end{figure}
+Earlier works that aimed to address concept removal, e.g. to counter the replication of exact objects, text embeddings etc. in large generative models focused on the persistence of harmful elements from the training set that pass over to the generated data, such as violence and sexual content. 
+Cleansing the training set from harmful samples and retraining the model from scratch is not feasible for large models already pre-trained on large data. 
+Also, censoring concepts at inference time is shown to be easy to bypass~\cite{rando_red-teaming_2022}.
+
+Current effective mitigation techniques in this category primarily focus on concept removal via fine-tuning, although some of the proposed techniques require at least a fraction of full retraining. 
+For instance, the authors of the \textit{data redaction}~\cite{kong_data_2023} method aim to remove data from pre-trained GANs by re-training the network on the original set, adding the redacted data to the fake data set and applying standard adversarial loss. 
+
+\textit{Safe latent diffusion}~\cite{schramowski_safe_2023} is proposed as a version of the Stable Diffusion (SD) model, trained to exclude inappropriate imagery originally contained in the LAION dataset used to train the SD. 
+It extends a latent diffusion model by incorporating a text prompt that describes inappropriate concepts such as hate, harassment, sexual content, self-harm, violence, shocking images, and illegal activity.
+This addition allows the model to simultaneously guide the image generation process towards producing content that aligns with the desired prompt and steer away from generating content associated with the defined inappropriate concepts.
+SLD is a seminal work for many later concept removal techniques that specifically address IP-related issues. We discuss those in the remainder of this section.
+%performs image editing at inference (post-hoc) without any further fine-tuning. 
+% The work is focused on removing harmful and offensive concepts such as hate, harassment, sexual content, self-harm, violence, shocking images, and illegal activity, although it is noted that the method can be used to remove any specified concept and the authors encourage transparency about which concepts are being removed.
+% This version of Stable Diffusion is trained to exclude harmful imagery, such  as violence... 
+
+% For
+% Safe Latent Defusion, the authors focus on removing inapropriate concepts such as violence and
+% nudity while Kumari et al. focus directly on mimicking artistic styles, hence provide a technology for opt-out
+% option for artistis whose art is already contained in the training data of the pretrained models.
+
+% Furthermore, \textit{Safe latent diffusion}~\cite{schramowski_safe_2023} performs image editing at inference (post-hoc) without any further fine-tuning. The work is focused on removing harmful and offensive concepts such as hate, harassment, sexual content, self-harm, violence, shocking images, and illegal activity, although it is noted that the method can be used to remove any specified concept and the authors encourage transparency about which concepts are being removed.
+% This is a version of Stable Diffusion trained to exclude harmful imagery, such  as violence... 
+
+Many concept removal methods for pre-trained models use fine-tuning to remove the target concept permanently from the model by modifying its weights while minimising the effects on other concepts.
+% \textit{Erasing concepts}~\cite{gandikota_erasing_2023} proposes a method for concept removal via fine-tuning model weights, hence removing the concept permanently rather than just at the inference time like its predecessor(??). 
+%Given the text description of the target concept, the method can modify the model weights to erase the concept while minimising the effects on other concepts. 
+In \cite{gandikota_erasing_2023}, \textit{erasing concepts} is based on the observation that cross-attention modules serve for text conditioning in text-to-image models (as opposed to self-attention modules that activate regardless of the text conditioning), therefore by fine-tuning these parameters the connection between text prompts and the output images can be removed. 
+\Cref{fig:erasing-concepts} shows how this method can be scaled to remove harmful concepts or unwanted objects and mitigate style mimicry attacks.
+Unified concept editing (UCE)~\cite{gandikota_unified_2024} is a generalised method from the same group of authors, where they combine approaches to mitigate style mimicry, bias and offensive content by concept erasure, while only causing minor effects on other concepts.   
+
+Other fine-tuning-based approaches~\cite{kumari_ablating_2023,zhang_forget-me-not_2023} propose \textit{concept ablation} resp. \textit{concept unlearning} by directing the unwanted samples towards a more general concept.
+These methods require additional input from the user, namely the description of a generalised concept in relation to the target concept - the \textit{anchor concept}. 
+During fine-tuning, the objective is to teach the model to generate the output as if the anchor concept was prompted instead of the target concept (e.g., "Nemo leaping out of the water" as "A fish leaping out of the water") via minimising the statistical distance between the generated image distribution of the target concept and the image distribution of the anchor concept.
+The resulting ablated images shown in \Cref{fig:ablation} lose the specific features of the target concept. 
+Limitations noted by the authors include the degradation in closely surrounding concepts (e.g., the ablation of the concept "Van Gogh" highly affects the concept "Monet").
+% Although the general style mimicking mitigation is not scalable using this method, it provides a promising underlying technology for artists to opt out of the huge pre-trained diffusion models. 
+
+The discussed concept removal techniques for image generation demonstrate an effective mitigation of style mimicry, as the artistic style could in this sense also represent a concept. 
+This paves the way for developing efficient opt-out techniques for artists who wish to secure their works against mimicry. 
+
+Unlearning techniques for LLMs include algorithms for approximating the removal of training data without retraining the model, which would be infeasible due to the prohibitive computational demand. 
+Two objectives are usually addressed in LLM unlearning~\cite{liu_rethinking_2024} - \textit{model capability removal}, mostly relevant for achieving privacy and safety~\cite{jang_knowledge_2022,wu_depn_2023,lu_quark_2022}, and \textit{data influence removal}, crucial for intellectual property protection.
+%Some works propose LLM unlearning for classification tasks~\cite{pawelczyk_-context_2023}.
+One such data influence removal approach demonstrates a case study using "Harry Potter" as a targeted content~\cite{eldan_whos_2023}. 
+It proposes generating generic predictions to replace specific content, thereby removing the memory of the targeted information while preserving its general performance. 
+%In-context unlearning~\cite{pawelczyk_-context_2023} is a black-box unlearning method without direct access to the model parameters. 
+%This method uses flipped labels and additional correctly labelled instances at inference time to eliminate the influence of a training point on the model output. --> evaluated for sentiment analysis
+
+\subsubsection{Watermarking \& ownership verification} \label{sec:mitigation-watermarking}
+% ad-hoc verification of participation; watermarking; ownership verification
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/watermarking-stages.PNG}
+    \caption{The two stages of forensic watermarking~\cite{cui_diffusionshield_2023}.}
+    \label{fig:watermarking-stages}
+\end{figure}
+Watermarking is a method facilitating the detection of content that is potentially subject to unauthorised usage as training data of generative models; it involves preemptively embedding imperceptible signals or patterns into the content to assert ownership or trace unauthorised use, to eventually protect intellectual property. 
+These techniques ensure that content generated by a GAI that leveraged such watermarked data can be identified or verified as originating from protected sources, providing a mechanism for content owners to safeguard their work. 
+
+Unlike methods based on adversarial perturbations, watermarking methods generally do not degrade the utility of the protected images for generation purposes but rather enable detection and verification of data ownership. 
+However, there is a slight ambiguity in the terminology throughout the literature, as a few of the methods addressed in \Cref{sec:mitigation-adversarial} are referred to as watermarking as well. 
+In \cite{zhang_editguard_2023} the authors refer to these methods as \textit{adversarial} watermarks, as opposed to the \textit{forensic} watermarks that are covered in this section. 
+As mentioned above, forensic watermarks achieve the goals of ownership verification and traceability. 
+This implies a two-stage process, as depicted in \Cref{fig:watermarking-stages}; this two-stage process is another key property of forensic watermarks that distinguishes it from adversarial watermarks.
+Forensic watermarking generally consists of (i) the \textit{protection stage}, where the watermark is created and embedded into the training samples, and which needs to take place before content sharing; and (ii) the \textit{audit stage}, which includes detecting the watermark from the generated content, its verification and further actions due to the committed violations. 
+
+Forensic watermarking has the following main requirements~\cite{lederer_identifying_2023}:
+\begin{itemize}
+    \item \textit{robustness}: the watermark is robust to changes in the content caused by the generation process or a text-guidance
+    \item \textit{fidelity} (also known as \textit{invisibility}): the watermark causes little impact on the quality of both the input (protected) samples and generated (synthesised) output
+    \item \textit{effectiveness}: successful watermark extraction from the watermarked content
+    \item \textit{integrity}: a valid watermark cannot be extracted from a non-watermarked content
+\end{itemize}
+
+% Watermarking GANs
+Watermarking for GANs by Hayes et al.~\cite{hayes_generating_2017} for embedding a secret signal within an image is based on adversarial training of three neural networks, \textit{A}, \textit{B} and \textit{C}. 
+\textit{A} embeds the signal within the original unmodified, \textit{cover} image, producing a \textit{steganographic} image, and sends it to \textit{B}, who can recover the message. \textit{C} can eavesdrop on the link between \textit{A} and \textit{B} and aims to discover if there is a secret signal embedded within their communication; given an image, \textit{C} places a confidence score of how likely the image is cover or steganographic. 
+Given this scenario, network \textit{A} is learning to embed a signal such that network \textit{B} can recover it and network \textit{c} can do no better than randomly guessing if an image is a cover or steganographic. 
+The GAN watermarking techniques require full access to the training process and perform no better than random guessing for subject-driven synthesis via diffusion models~\cite{ma_generative_2023}. 
+
+For diffusion models, GenWatermark~\cite{ma_generative_2023} is a method for protecting image data in a subject-driven synthesis scenario. 
+It consists of a generator and a detector, both pre-trained on a large general dataset and optimised in an adversarial learning manner under the bound of perturbation budget; the generator is learned to generate strong watermarks while the detector learns to distinguish between clean and watermarked images. 
+This concludes the first phase, after which, a generator and a generic detector have been trained. 
+In the second phase, the detector can be fine-tuned to a specific subject (e.g., one artistic style). 
+This is done such that two models are trained, a clean model on a clean image set and a watermarked model on a corresponding watermarked image set. 
+These two models are then used to synthesise image sets for fine-tuning the detector.
+
+Similarly, concept watermarking~\cite{feng_catch_2023} is proposed with the idea of jointly training a watermark encoder and watermark decoder to embed a watermark into a specific concept. 
+This method is evaluated specifically for a textual inversion scenario, i.e. subject-driven fine-tuning, hence the watermark is directed towards the introduced word.   
+
+FT-Shield~\cite{cui_ft-shield_2023} is a method designed for fine-tuning text-to-image diffusion models. 
+The perturbations that represent a watermark are optimised such that they are learned by the diffusion model before other features such as style.
+Watermark detection is done by a binary classifier learned to distinguish clean from watermarked images using the original pairs of clean and protected images and augmented with images generated by the model. 
+
+DiffusionShield~\cite{cui_diffusionshield_2023} is a method that embeds watermarks into images and ensures that the watermark is learned by a diffusion model and reproduced in generated images, allowing the detection of a legitimate owner.
+The watermark is thus able to persist the diffusion process, unlike prior image watermarking approaches based on the frequency domain~\cite{navas_dwt-dct-svd_2008} and NNs~\cite{zhu_hidden_2018}, and those designed for DeepFake detection~\cite{yu_artificial_2021}.
+The authors assume a scenario where the content owner has rights over multiple images and embeds the same watermark into each of them. 
+The effectiveness of the watermarks is also demonstrated in scenarios where multiple owners embed separate (different) watermarks into their respective images. 
+
+EditGuard~\cite{zhang_editguard_2023} is a framework meant to achieve two goals simultaneously; copyright protection and tamper localisation. 
+It leverages image-into-image steganography (an image embedded within another image) for embedding and accurately decoding both tampered areas and copyright information. 
+Robust Invisible Watermarking (RIW)~\cite{tan_somewhat_2023} is a watermarking technique specifically designed against unauthorised editing. 
+These watermarks are typically simple, repetitive images such as plain text with a black background, and are embedded into the latent representation of the target image. 
+This method optimises the watermark separately for each input sample. 
+After editing, the watermark can be extracted by calculating a pixel-wise difference between the watermark and the edited image or utilising an OCR (Optical Character Recognition) model, the latter being more effective.
+
+TimbreWatermarking~\cite{liu_detecting_2024} is a method for watermarking against unauthorised audio synthesis. 
+It embeds a watermark in the frequency domain that aims to be detectable after voice cloning attempts.
+%todo 
+% \reminder[inline]{
+% Related: Marking for detecting deepfakes (generated content detection, e.g synthID, \cite{fernandez_stable_2023,wen_tree-ring_2023}), authenticity verification (checking a potentially manipulated watermark) 
+% }
+
+\subsubsection{Detection and attribution}\label{sec:mitigation-detection}
+% Detection: the premise is that we don't know whether the sample is part of the training data
+% Attribution: the premise is that we know that the sample is part of the training set
+
+%TODO: I think it would be useful to discuss how detection can be used further downstream - i.e. what do you do with the information that something was detected as generated / IP infringing?
+
+To provide the artists with an efficient and rather simple way to make initial steps in protecting their art, efforts have been put into developing tools where artists can verify whether their art is part of large datasets and, consequently, a part of training sets for generative models, i.e. the \textit{detection of participation}. 
+One such solution is the project \textit{Have I been trained?}\footnote{\url{https://haveibeentrained.com/}} %~\cite{noauthor_have_nodate} 
+by the company \textit{Spawning}\footnote{\url{https://www.spawning.ai}}. %~\cite{noauthor_spawningai_nodate}. 
+The tool relies on Contrastive Language-Image Pre-Training (CLIP) retrieval to enable artists to search the LAION-5B and LAION-400M datasets, which are used to train Stable Diffusion and Midjourney models. 
+In the Spawning framework, this detection serves as an initial step, which can be followed by an opt-out mechanism for artists to retract their art from the datasets. 
+
+\textit{Data attribution} in generative models involves identifying the contribution of specific data samples to the generated outputs. 
+From an ethical point of view, this process is crucial for understanding how models generate content, addressing not only concerns about copyright but also data privacy and transparency. 
+Techniques for data attribution may include proactive detection methods such as embedding watermarks in the training data which can later be detected in the generated content, i.e. forensic watermarks discussed in \Cref{sec:mitigation-watermarking}. 
+On the other hand, different analytical methods may be used to trace the influence of training samples on the behaviour of the model. 
+% We refer to these as post-hoc detection methods as they do not involve active action of any stakeholder during the data sharing or model training phase, but are rather applied after inference.
+
+
+%% Membership inference applied to detect training data 
+Given a generated sample, finding the contributing matches across the large training dataset is often infeasible, however, in some special cases, the approximate matches can be extracted.
+This special case requires generated content to be highly, almost 100\% influenced by a single training sample and is shown to be a feasible scenario~\cite{carlini_extracting_2023,somepalli_diffusion_2022}. 
+In \Cref{sec:IPR-threats} we discussed this as a data replication problem that may be leveraged for copyright infringements. 
+In this context, it can serve as evidence to the copyright owner that their data has been used for training. 
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\linewidth]{figures/attribution.PNG}
+    \caption{Attribution by Customisation (AbC)~\cite{wang_evaluating_2023}}
+    \label{fig:attribution}
+\end{figure*}
+
+When it comes to attribution in the more general but complex scenario where the generated sample is influenced by multiple training samples, Wang et al.~\cite{wang_evaluating_2023} take a leap towards understanding the influences of an individual image in the generative process. 
+Drawing from the observations that the main challenge in attributing generated images to specific training samples is the lack of ground truth for this task, the key idea is to simulate ground truth directly by adding exemplar influences, as illustrated in \Cref{fig:attribution}.
+Wang et al. use textual inversion to customise images, thus creating a set of synthesised images influenced by their corresponding exemplar image. 
+Using the dataset, the method tunes the retrieval feature spaces CLIP~\cite{pizzi_self-supervised_2022}, DINO~\cite{caron_emerging_2021}, ViT~\cite{dosovitskiy_image_2021}, ALADIN~\cite{ruta_aladin_2021}, SSCD~\cite{pizzi_self-supervised_2022} via contrastive learning~\cite{oord_representation_2019} to obtain attribution scores representing the influence of multiple candidate images on the generated image.
+In \cite{dai_training_2023} the authors introduce the \textit{encoded ensemble} method that enables the identification of influential training examples by leveraging ensemble training on carefully engineered splits of the training data. 
+The main limitation of this method is its computational expansiveness as it requires training ensembles of 10-50 diffusion models.
+
+%TODO: I think it is not very clear what this section is about; maybe have some quick intro sentence that explains that
+\subsection{Policy, ethical usage and recommendations}\label{sec:mitigation-ethical} % Policy-driven frameworks?
+% generally here we have:
+% % consent options on different platforms
+% % blocking scraping 
+
+% this section focuses on artists' options to take action
+Several sophisticated models are already trained on a large corpus of data scraped from different sources, such as portfolio sites for artists (Pinterest, ArtStation) and shopping sites (Fine Art America), without the artists' consent for their art being used as training data.
+%In particular, Stable Diffusion has been trained on the LAION-5B dataset, currently the largest image-text dataset in the world~\cite{schuhmann_laion-5b_2022,noauthor_laion-5b_nodate}
+
+As discussed in \Cref{sec:mitigation-detection}, Spawning automates the process of identifying and flagging non-consenting data, creating opt-out lists that are forwarded to LAION who have agreed to remove those images from its dataset~\cite{wu_how_2023}.
+Opt-out options have recently been adopted by online artist communities such as \textit{Deviant Art}. 
+With this, they attempt to disallow third parties to scrape the content for AI development purposes without artists' knowledge and permission~\cite{wiggers_deviantart_2022}. 
+In fact, the default setting for artists is an \textit{opt-out}; therefore an artist needs to make an active choice and consent to opt in. 
+Some platforms even prevent the scraping completely; The Guardian, New York Times, CNN, Australian Broadcasting Corporation, British Broadcasting Corporation and Reuters have reportedly blocked ChatGPT (GPTBot) and Common Crawl from scraping their content due to the intellectual property considerations of the authors and licence fee payers~\cite{bogle_new_2023,marcus_generative_2024}.
+%ethical usage
+% focus on end-user action
+% consent-driven AI tools
+Some projects address the development of ethical tools for generating art content. 
+These AI tools are trained explicitly on data for which consent was given.
+Spawning offers an API for training ethical models ensuring that all underlying data has been provided with consent.
+One instance of a consent-respecting AI model is Holly+\footnote{\href{https://holly.mirror.xyz/54ds2IiOnvthjGFkokFCoaI4EabytH9xjAYy1irHy94}{https://holly.mirror.xyz/}}%~\cite{herndon_holly_nodate}
+, a tool which allows uploading a polyphonic audio track and generating a version of it sung by a \textit{deepfake} of its creator, Holly Herndon.
+% standards
+% Source+ (a product of the organisation Spawning. Spawning also created "Have I been trained") -- source for this is missing, it is in beta stage apparently
+
+Policy development plays a critical role in navigating the development and usage of generative AI. 
+Technical solutions discussed in the previous sections can be incorporated within the API of the generative models, as Salman et al.~\cite{salman_raising_2023} briefly discuss this possibility in case of cloaking the copyrighted works. 
+To address more general ethical considerations surrounding GAI, Knott et al.~\cite{knott_generative_2023} advocate for a collaborative effort among policy-makers, researchers and AI developers to demonstrate and integrate reliable detection mechanisms for the content their models generate, relying on various technical approaches such as watermarking, exploiting statistical features and maintaining logs of generated content for comparison. These detection tools should be publicly available, enabling users to verify the origin of content. 
+Furthermore, the \textit{Content Authenticity Initiative}\footnote{\url{https://contentauthenticity.org}} is developing an open standard and provenance tool that would prove the authenticity of digital content via watermarking. 
+It promotes trustworthiness and transparency by helping fight disinformation as well as protecting the IPRs of digital content creators.%~\cite{noauthor_content_nodate}. 
+%OpenAI updated content policies to prohibit generating copyrighted characters, trademarks or IPs that could infringe the rights,  such as characters from movies, TV shows, books, video games, and other media. 
+
+% ethical development
+A responsible act from the perspective of model development is taking into account the concerns of memorisation and assessing the necessity of further actions (e.g., applying techniques from \Cref{sec:mitigation}) before deploying the model.
+It is generally a good recommendation to test the model's generalisation ability, however, this is not a good enough indicator of whether the model still memorises the training data. 
+Carlini et al. \cite{carlini_secret_2019} propose a strategy for testing the model memorisation already at training time. 
+This can be done by augmenting the training process with some random unexpected input and measuring the likelihood of its generation. 
+Although this method has been empirically evaluated on large text models (e.g. Google's Smart Compose, a commercial text-completion model~\cite{chen_gmail_2019}) to measure the model's potential unintended memorisation of unique sequences, it could be repurposed for copyright protection too. 
+Ring-A-Bell~\cite{tsai_ring--bell_2023} is a red-teaming framework proposed for prompt-based concept testing that generates prompts leading to the generation of problematic concepts.
+
+Formalisation of the problem of intellectual property protection in AI is addressed in the recent work ~\cite{vyas_provable_2023}. 
+The authors draw parallels from differential privacy and provide a formal guarantee on the (lack of) similarity between the output of a generative model and any potentially copyrighted data in its training set. 
+The method to achieve the guarantee is evaluated on a transformer and diffusion model although it is claimed as model-agnostic.
+
+%\section{Cost of mitigation}% implications
+%todo: protection vs utility discussion
+% -- differences in distortions caused by protection in levels: non-distorting (watermark), somewhat distorting (i. distorting the targeted style, ii. distorting the targeted style and related concepts; cloaking; concept removal; how much the distortion bleeds to related concepts e.g.) and distorting (poisoning)
+
+% sections "IPR in other parts of GenAI" and "Other issues in GenAI" can be a part of related work
+% in that case put the related work at the end
+% Related work subsections:
+% % i) Surveys
+% % ii) IPR of other parts of GenAI
+% % iii) Related issues in GenAI
+%\section{IPR and generated content} % + IPR of models + IPR of prompts
+
+% todo: discussions of IPR for generated content; watermarking as a protection method
+% this is potentially out of scope, although it could be included just from the technical perspective and avoid the legal discussions that are anyway already in some surveys
+
+% \section{Related issues}
+
+% \subsection{Other recommendations}
+
+% \paragraph{Testing model memorisation}
+% \cite{carlini_secret_2019}
+% The strategy is: train the model, augment the training process with some random unexplected input, ask how likely 
+
+% Exposure metric
+% Canary; likelihood (Google uses this)
+% a, this paper
+% introduces a quantitative metric of exposure. This metric can
+% be applied during training as part of a testing methodology
+% that empirically measures a model’s potential for unintended
+% memorization of unique or rare sequences in the training data.
+
+% TODO: add stakeholders as a discussion point; possibly also an axis in the taxonomy
+
+% in progress
+\section{Discussion}\label{sec:discussion}
+\input{discussion}
+
+
+\section{Conclusions}\label{sec:conclusion}
+In this paper, we reviewed potential IP violations of data used to train (large) generative AI models, as well as state-of-the-art technical protection methods.
+The methods considered generally achieve diverging goals in terms of protection: (i) they may limit the usability of the data samples in the training process, (ii) provide traceability and attribution of the usage of data from the generated content and (iii) protect artistic styles from being learned and generated by the model.
+
+IP protection is only a fragment of the trustworthy and responsible development of generative AI.
+We discussed how the existing solutions for other ethical issues, such as harmful content generation and deepfakes, share similar underlying techniques with IP protection but focus on different outcomes.
+In an ideal scenario, these goals could be met simultaneously. Therefore, significant challenges lay ahead towards developing trustworthy and responsible generative AI. 
+
+While the landscape of IP protection techniques in generative AI is only beginning to materialise, we noted in \Cref{sec:conclusion:challenges} that attacks that invalidate these protections have already been proposed.
+Looking forward, the longevity of generative AI technologies and their fair use will be determined not just by their technological advancements but by how well they integrate ethical considerations and comply with evolving policy landscapes as they become more deeply integrated into various sectors.
+Therefore, individuals and organisations involved in generative AI need to be aware of the potential violations and ensure that they have the necessary rights and permissions for the data and content used in the development and application of these models. 
+While this paper contributes to the understanding of technical IP protection methods in generative AI, it also calls for ongoing improvements in protection technologies and policies emphasising transparency and fairness in generative AI development.
+
+%Seeking legal advice and adhering to intellectual property laws and regulations can help prevent such violations and protect both creators and users of generative AI models.
+% Longevity: ethical considerations besides adhering to policies
+% call for promoting more improvements in protective technology and policies
+
+
+%TODO: conclusions need to be much stronger
+
+%TODO: I miss somewhere a discussion of the arms-race between protection and breaking those; drawing parallels to maybe adversarial examples and defences against those, and how those defences again can be broken, would be one interesting aspect
+% In general, discussing whether protection is meaningful at all could be interesting
+% Also, any recommendations for artists would be great - even if that is only to be careful on what they publish, where they publish it, how they publish it (e.g. low-res only), ...
+
+% It is essential for individuals and organisations involved in generative AI to be aware of the potential violations and ensure that they have the necessary rights and permissions for the data, content, and algorithms used in the development and application of these models. 
+%Seeking legal advice and adhering to intellectual property laws and regulations can help prevent such violations and protect both creators and users of generative AI models.
+
+\bibliographystyle{ieeetr}
+% \bibliography{references_Zotero} % --> uncomment for the final version
+\bibliography{references-Tanja-workingVersion}  
+%\bibliography{references-Rudi-workingVersion}  
+
+\end{document}

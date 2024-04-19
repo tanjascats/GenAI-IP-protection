@@ -1,0 +1,69 @@
+The rapid development of generative AI sparked debates on several other ethical aspects of the usage of GAI beyond the discussion regarding the intellectual property of the training data; these include the generation of harmful content, privacy, AI-generated content detection, and the IP of the generated content. 
+Unfiltered training data and manipulative intents can lead to violations in these areas; many protection methods address some of these issues simultaneously. 
+In this section, we first discuss works addressing other ethical issues in GAI that largely overlap with IP protection and the nature of their relation. 
+Secondly, we discuss the general challenges of the proposed methods for IP protection we presented in \Cref{sec:mitigation}.
+
+\subsection{IP protection vs. other ethical questions in GAI}
+% Harmful content
+Concept removal~\cite{liu_geom-erasing_2023,ho_classifier-free_2022} and unlearning~\cite{wu_erasediff_2024} are examples of the methods addressing harmful content generation -- in fact, they were originally designed for this purpose, and later also evaluated on IP protection scenarios.
+Hence, we discussed concept removal methods in the light of protection against style mimicry in \Cref{sec:mitigation-concept}. 
+
+Methods initially designed for harmful content protection that have not yet been evaluated for IP protection can likely be utilised in this scenario as well, similarly to the examples from \Cref{sec:mitigation-concept}, by treating the artistic style as a concept.
+Furthermore, harmful content is addressed via detection~\cite{rando_red-teaming_2022} and prompt-modifying methods~\cite{hanu_detoxify_2020} based on safety checkers filtering the harmful content. 
+These could also be extended to IP protection scenarios by detecting and filtering keywords that lead to potential copyright violations (e.g. names of the artists)~\cite{noauthor_openai_2023}.
+
+% Privacy  
+Similarly, there are notable cloaking methods~\cite{wu_towards_2023} designed for protecting privacy against human face generation via DMs that do not explicitly evaluate their utility for the IP protection scenario, but are a valuable motivation for the methods in \Cref{sec:mitigation-adversarial}.
+
+% Deepfake prevention
+Protection against deepfake generation shares similarities to the works in IP protection. 
+They use the same underlying methods (adversarial perturbations, watermarking), but address different scenarios.
+For instance, methods that proactively counter deepfakes majorly rely on adversarial perturbations, similar to cloaking methods. 
+These perturbations are optimised to disrupt the deepfake generation by causing the low quality of generated content or nullifying the functionality~\cite{ruiz_disrupting_2020,dong_restricted_2023,ruiz_practical_2023}. 
+% Deepfake detection (detection of generated content)
+On the other hand, deepfake watermarking methods do not prevent, but rather detect the deepfakes~\cite{wang_faketagger_2021,wu_sepmark_2023}. 
+This scenario can be compared with watermarking for IP protection~\cite{lederer_identifying_2023} as they share the objective of embedding a verifiable watermark in the generated content.
+
+
+% Deepfake detection (detection of generated content)
+Detection of AI-generated content (not only deepfakes), e.g. text~\cite{noauthor_science_2024} and images~\cite{liu_detecting_2022}, plays an indirect role in intellectual property protection as well, especially when it comes to creative works. 
+Current detection techniques for AI-generated text, however, struggle with reliability due to high false negative rates~\cite{sadasivan_can_2024,weber-wulff_testing_2023}. 
+Moreover, the effectiveness significantly decreases when faced with machine translation and obfuscation techniques.
+Similarly, for images, reactive detection techniques relying on statistical artefacts are also not effective~\cite{corvi_detection_2023}.
+For image data, preemptive watermarking techniques are designed to embed a signal into the content to later be detected as generated content~\cite{zhu_hidden_2018,zhang_udh_2020}, or further, attributed to a specific generative model\footnote{\url{https://deepmind.google/technologies/synthid/}}.
+These techniques have also shown to be insufficiently robust against minor perturbations~\cite{jiang_evading_2023}.
+
+
+% IP of AIGC
+The ownership over AI-generated content is another ethical question that is heavily discussed at the moment and there is no clear consensus on who and if anyone should own the AI-generated content. 
+Some artists whose artworks are a part of the training sets hold a stance on being recognised for their contribution to the generated content~\cite{koziol_stable_2023}. 
+This question sparked the research and development of attribution methods, which could provide the original content owners with the appropriate acknowledgement and/or compensation; however, to this date, these attribution methods are not advanced enough to reliably detect the exact training sample contributing to the output of complex generative AI models, as discussed in \Cref{sec:mitigation-detection}. 
+As opposed to this, others suggest that transformative use of data in generative AI should classify model training as fair use~\cite{lemley_fair_2021}.   
+
+Another view is that the user of the generative AI should be able to own the generated content in some scenarios. Automatically generated content generally cannot be protected by law in several relevant jurisdictions, however, the real interaction between the user and the AI is more complex -- the generated outputs in question are usually a result of many sequential prompts and a mix of other artistic techniques such as photography, oil painting etc. 
+There are notable works produced such that the artists included prompting AI in the process of creation alongside other techniques, e.g. the prize-winning “Théâtre D’opéra Spatial” by Jason M. Allen and "A Recent Entrance to Paradise" by Stephen Thaler.
+Copyright protection has consistently been denied for these works ruling that prompting alone is not enough to claim authorship, as the user has limited control over how AI systems interpret and generate the output, disregarding the complex nature of their creation~\cite{roose_ai-generated_2022,brodkin_us_2023}.
+Therefore the question remains open -- how much human input is necessary for the AI user to be qualified as an author?
+
+\subsection{Recommendations and Challenges}\label{sec:conclusion:challenges}
+
+\textit{Dataset sanitisation} techniques are a good first-line defence due to their effectiveness in reducing model memorisation and, consequently, the replication of training data in generated content. 
+\textit{Inference-time prompt modification} strategies can further reduce replication. 
+\textit{Content moderation at inference} is a computationally feasible method to address filtering unwanted concepts in the generated content but requires a significant amount of labelled data.
+However, none of these methods entirely circumvent the memorisation problem and do not solve more specific IP issues such as style mimicry.
+For that, \textit{concept removal} methods can be applied such that specific artistic styles cannot be generated.
+A big challenge of concept removal methods is that the removal of the target concept usually affects the generation of related concepts, hence the performance of the GAI model can be reduced.
+The general issue of lack of definition for an "artistic style" presents itself as a challenge for the \textit{cloaking methods}, as well. 
+This is why most of the methods need another target style to steer the adversarial modification. 
+Cloaking methods have gained the interest of both research and content-owner communities because these are the only prevention methods that content owners can proactively apply to protect their works. 
+
+For ownership detection, content owners can also proactively embed watermarks. 
+Watermarking is shown to be effective mostly when used in fine-tuning GAI (e.g. textual inversion), hence embedded into a narrow, specific concept, or in the image editing scenario where typically most of the original image is preserved in the output. 
+
+A challenge for techniques such as watermarking or cloaking methods is the limited cross-model transferability, i.e. methods developed for a specific type and version of the generative AI model might not be as effective for a different model. Also, protection methods themselves will become targets for specific removal attacks, and attackers can e.g. adapt from the range of methods developed to defend against adversarial examples (e.g. \cite{meng_magnet_2017}).
+
+This puts the content owners into an arms race with the AI providers and potentially provides a false sense of security.
+Aggravating to the arms race, content (even when protected with these methods) cannot be easily retracted once published online and scraped and copied by adversaries; they thus have sufficient time to develop protection removal methods.
+
+These types of issues call for more policy-based approaches and better collaboration between content owners, researchers and AI providers. 
+This would ensure a more sustainable development of AI where the accent is on promoting trust and transparency as much as supporting innovation. 

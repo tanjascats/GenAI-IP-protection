@@ -1,0 +1,30 @@
+
+\begin{table*}
+    \centering
+\caption{Adversarial perturbation-based protection methods and their main properties. I2I: image-to-image translation; T2I: text-to-image generation; CT2I: customised text-to-image.}
+\label{tab:adversarial-perturbations}
+\rowcolors{2}{white}{gray!15}
+    \begin{tabular}{l|>{\raggedright\arraybackslash}p{0.19\linewidth}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.16\linewidth}}
+ \toprule
+ \textbf{Method}& \textbf{Method target}& \textbf{Scenario} & \textbf{Violation} & \textbf{Distortion}\\
+ \midrule
+         AdvDM~\cite{liang_adversarial_2023}&  diffusion&  CT2I, I2I &  style mimicry
+unauth. editing & semantic\\
+         Mist~\cite{liang_mist_2023}&  VAE encoder \& diffusion&  CT2I, I2I &  style mimicry
+unauth. editing& semantic/graphical \\
+         UDP~\cite{zhao_unlearnable_2023}&  diffusion& T2I, CT2I &  style mimicry
+unauth. training&graphical \& semantic\\
+         Glaze~\cite{shan_glaze_2023}&  VAE encoder& T2I, CT2I &  style mimicry& semantic\\
+         DUAW~\cite{ye_duaw_2023}&  VAE decoder& CT2I &  style mimicry
+unauth. training& graphical\\
+Nightshade~\cite{shan_prompt-specific_2023} & VAE encoder & T2I & unauth. training   & graphical \& semantic \\
+ Anti-Dreambooth~\cite{van_le_anti-dreambooth_2023} & fine-tuning process & CT2I & unauth. training & graphical \& semantic\\ 
+ Metacloak~\cite{liu_toward_2023} & fine-tuning process & CT2I & unauth. training & graphical \& semantic\\
+ ACE~\cite{zheng_understanding_2023} & fine-tuning process & CT2I & style mimicry, unauth. training & graphical\\
+ EditShield~\cite{chen_editshield_2023}&  VAE encoder&  I2I&  unauth. editing& semantic\\
+ Photoguard~\cite{salman_raising_2023}& VAE encoder \& diffusion& I2I& unauth. editing& graphical\\
+ \bottomrule
+    \end{tabular}
+    
+    
+\end{table*}

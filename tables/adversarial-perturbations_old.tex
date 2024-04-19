@@ -1,0 +1,25 @@
+\begin{table*}[ht]
+    \caption{Adversarial perturbations and cloaking protection methods.}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|l|l|l|l|l|l}
+    \toprule
+         Method & Target model & Method target & Domain & Violation & Phase of application & Distorted output \\ % all output types are images
+         \midrule\midrule
+         AdvDM~\cite{liang_adversarial_2023} & LDM & diffusion process & Text-to-image/ & Style mimicry & fine-tuning & somewhat\\
+         & & & Image-to-image/ & & & \\
+         & & & Style transfer & & & \\\midrule
+         Mist~\cite{liang_mist_2023} & LDM & diffusion process & Text-to-image/ & Style mimicry & & somewhat\\
+         & & & Image-to-image/ & & & \\
+         & & & Style transfer & & & \\\midrule
+         Glaze~\cite{shan_glaze_2023} & LDM & encoder & Text-to-image & Style mimicry & fine-tuning & somewhat\\\midrule
+         DUAW~\cite{ye_duaw_2023} & LDM & VAE & Style transfer & Style mimicry & fine-tuning & yes \\\midrule
+         UDP~\cite{zhao_unlearnable_2023}\\\midrule
+         Photoguard~\cite{salman_raising_2023} & LDM & encoder/ & Image-to-image & Unauthorised editing & &\\
+            && diffusion &&&\\\midrule
+         EditShield~\cite{chen_editshield_2023} & LDM & diffusion process & Image-to-image & Unauthorised editing & inference & somewhat \\\midrule
+         \bottomrule
+    \end{tabular}
+    }
+    \label{tab:adversarial_perturbations}
+\end{table*}
