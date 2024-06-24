@@ -7,7 +7,7 @@ This repository contains a collection of methods for intellectual property prote
 :construction_worker: Work in progress.
 
 ## Adversarial modifications
-2020	Shan et al.	**Fawkes: Protecting Privacy against Unauthorized Deep Learning Models.** USENIX 2020. [paper](https://www.usenix.org/conference/usenixsecurity20/presentation/shan)\
+2020	Shan et al.	**Fawkes: Protecting Privacy against Unauthorized Deep Learning Models.** _USENIX 2020_. [[paper](https://www.usenix.org/conference/usenixsecurity20/presentation/shan)]\
 2023	Shan et al. **Glaze: Protecting Artists from Style Mimicry by Text-to-Image Models** [paper](http://arxiv.org/abs/2302.04222)  \
 2023	Salman et al.	**Raising the Cost of Malicious AI-Powered Image Editing** [paper](http://arxiv.org/abs/2302.06588)\
 2023	Zheng et al.	**Understanding and Improving Adversarial Attacks on Latent Diffusion Models** [paper](http://arxiv.org/abs/2310.04687)\
