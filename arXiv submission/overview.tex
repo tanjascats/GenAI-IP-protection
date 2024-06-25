@@ -1,0 +1,25 @@
+\begin{table*}[ht]
+    \caption{An overview and taxonomy of mitigation techniques for IPR protection in generative AI}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{l|l|l|l}
+        \toprule
+         \textbf{Approach}& \textbf{Domain} & \textbf{IPR violation type} & \textbf{Phase of application}  \\
+         \midrule
+         Deduplicating training data\cite{carlini_extracting_2023} & all & data replication & training time  \\
+         Image caption modification\cite{somepalli_understanding_2023} & text-to-image & data replication & training/inference time  \\
+         Machine Unlearning\cite{sekhari_remember_2021,neel_descent--delete_2020,zhang_forget-me-not_2023,golatkar_eternal_2020} & all & data replication & training time \\
+         Cloaking\cite{shan_glaze_2023} & text-to-image & mimicry & training/fine-tuning\\
+        Concept removal&&&\\
+         \hspace{10pt} Safe latent diffusion\cite{schramowski_safe_2023} & text-to-image  & mimicry & inference time\\
+          \hspace{10pt} Erasing concepts \cite{gandikota_erasing_2023} & text-to-image & mimicry & fine-tuning\\
+          \hspace{10pt} Concept ablation \cite{kumari_ablating_2023} & text-to-image & replication, mimicry & fine-tuning\\
+          \hspace{10pt} Data redaction\cite{kong_data_2023} & GANs & mimicry & training \\
+         Spawning\cite{noauthor_spawningai_nodate}& any & replication, mimicry & - \\
+         Consent-respecting training\cite{noauthor_holly_nodate} & any & mimicry & training time \\
+         Testing memorisation\cite{carlini_secret_2019} & text models & replication & training time \\
+         \bottomrule
+    \end{tabular}
+    }
+    \label{tab:mitigation}
+\end{table*}
