@@ -2,15 +2,9 @@
 
 \IEEEoverridecommandlockouts
 
-% Language setting
-% Replace `English' with e.g. `Spanish' to change the document language
 \usepackage[english]{babel}
-
-% Set page size and margins
-% Replace `letterpaper' with `a4paper' for UK/EU standard size
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=2cm]{geometry}
 
-% Useful packages
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
@@ -18,7 +12,7 @@
 \usepackage{adjustbox}
 \usepackage{cleveref}
 \usepackage{todonotes}
-\usepackage{array} % required for text wrapping in tables
+\usepackage{array} 
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -30,8 +24,6 @@
 \newcommand{\reminder}[2][]
 {\todo[color=blue!18, #1]{#2}}
 
-% \title{U Can't Gen This?\\
-% A Survey and Systematisation of\\ Intellectual Property Protection Methods\\ for Data in Generative AI}
 \title{U Can't Gen This?\\
 A Survey of Intellectual Property Protection Methods for Data in Generative AI}
 
@@ -48,28 +40,24 @@ A Survey of Intellectual Property Protection Methods for Data in Generative AI}
     \IEEEauthorblockA{\textit{SBA Research},
         Vienna, Austria\\
         akarlowicz@sba-research.org
-        %, 0000-0002-0721-5763
     }
 \and
     \IEEEauthorblockN{Rudolf Mayer}
     \IEEEauthorblockA{\textit{SBA Research},
         Vienna, Austria\\
         rmayer@sba-research.org
-        %, 0000-0003-0424-5999
     }
 \and
     \IEEEauthorblockN{Ricardo Baeza-Yates}
     \IEEEauthorblockA{\textit{EAI, Northeastern University},
         Silicon Valley, CA, USA\\
         rbaeza@acm.org
-        %, 0000-0003-3208-9778
     }
 \and
     \IEEEauthorblockN{Andreas Rauber}
     \IEEEauthorblockA{\textit{TU Wien},
         Vienna, Austria\\
         andreas.rauber@tuwien.ac.at
-        %, 0000-0002-9272-6225
     }
 }
 
@@ -93,8 +81,8 @@ This cutting-edge technology has the potential to disrupt traditional creative p
 While GAI opens up exciting opportunities for innovation and artistic expression, it also presents significant challenges concerning intellectual property rights and ethical considerations.
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\linewidth]{figures/mchammer-cantgenthis.PNG}
-    \caption[]{\textit{U can't gen this? MC Hammer failing to generate a photo of himself}" %, generated using DALL-E 3
+    \includegraphics[width=\linewidth]{mchammer-cantgenthis.PNG}
+    \caption[]{\textit{U can't gen this? MC Hammer failing to generate a photo of himself}" 
     \footnotemark.
     } 
     \label{fig:introduction}
@@ -151,7 +139,7 @@ This inverted scenario has already been investigated for IP protection of ML mod
 \section{Methodology}\label{sec:methodology}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/stats.png}
+    \includegraphics[width=\linewidth]{stats.png}
     \caption{The literature distribution over types of protection methods and year of publication.}
     \label{fig:stats}
 \end{figure}
@@ -230,7 +218,7 @@ For visual content, an instance of plagiarism or imitation is \textit{style mimi
 \paragraph{Style mimicry in visual art}
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\linewidth]{figures/mimicry.jpg}
+    \includegraphics[width=\linewidth]{mimicry.jpg}
     \caption{\textbf{Style mimicry} in Stable Diffusion. Left: original artwork by Hollie Mengert vs. Right: images generated in her style~\cite{baio_invasive_2022}.}
     \label{fig:style-mimicry}
 \end{figure}
@@ -272,7 +260,7 @@ Thus, voice cloning can cause financial losses, public panic, reputation damage 
 \subsubsection{Reproduction of copyrighted materials} 
     \begin{figure*}[ht]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/replicate_userprompts.JPG}
+    \includegraphics[width=0.9\textwidth]{replicate_userprompts.JPG}
     \caption{\textbf{Data replication} in Stable Diffusion. Top row: generated images, bottom row: training samples~\cite{somepalli_understanding_2023}.}
     \label{fig:replication-user}
 \end{figure*}
@@ -335,14 +323,10 @@ The amount of replicated data from language models is generally proportionate to
 
 Memorisation is largely studied in the light of \textit{membership inference attacks}, where the adversary's goal is to infer whether a particular data sample was part of the training set for a given model. Membership inference has first been discussed for supervised machine learning models (such as classification or regression models)~\cite{shokri_membership_2017}, but has later been expanded to GAI models as well~\cite{webster_this_2021,hu_membership_2023,matsumoto_membership_2023}.
 Another attack exploiting the memorisation capabilities is the \textit{model inversion attack}~\cite{fredrikson_model_2015}, where the objective of the attacker is to recreate one or more (not publicly shared) training samples used to train the target model\cite{yin_dreaming_2020,ghiasi_plug-inversion_2022,carlini_extracting_2023}. 
-%While this is a problem out of the scope of this paper, 
 It is important to note that membership inference can be performed by reconstructing the original training data from the model outputs (i.e. via model inversion), hence both lines of work produce highly relevant insights for intellectual property protection of training data.
 In the context of GAI, these attacks build on directed prompt crafting to produce a desired outcome, while violation of IP rights can occur by models spontaneously generating the training set replicas without malicious intentions of the end-user.
-%One of them is that 
 
 \subsubsection{Content-style disentanglement}
-% todo
-%Motivation from \cite{wu_uncovering_2023}.
 A concept in the realm of image generation models closely related to style transfer and mimicry is disentanglement. This property allows for the separation of attributes within the generated image, allowing for targeted modifications of specific aspects like style without changing the image content. Disentangling style from content enables the application of a particular image or artist's style to another image.
 Disentanglement is an inherent property of some models such as GANs and diffusion models, which allows for image editing without any additional learning. Disentanglement can be simply done by exploiting the learned latent representation of the generator in a GAN~\cite{collins_editing_2020, harkonen_ganspace_2020} or, for text-to-image diffusion models such as Stable Diffusion, replacing the text embedding with desired modification at later denoising steps during the reverse diffusion process~\cite{wu_uncovering_2023}. This preserves the semantic content of the original image while shifting it toward the target style. The inherent disentanglement capability does not require fine-tuning the model as opposed to the task of disentanglement representation learning~\cite{higgins_towards_2018} for more controlled editing. 
 Current works on representation disentanglement learning are mainly focused on unsupervised techniques incorporating encoders and modified loss functions into optimisation such as content-preservation loss and style-disentanglement loss~\cite{yang_disdiff_2023, wang_stylediffusion_2023, kwon_diffusion-based_2023, kazemi_style_2018}.
@@ -395,7 +379,7 @@ This includes:
 
 According to these three levels of categorisation, we identify seven types of protection techniques, as shown in \Cref{fig:taxonomy}. 
 
-\input{tables/terminology} 
+\input{terminology} 
 
 
 \begin{itemize}
@@ -439,10 +423,10 @@ Memorisation, however, cannot be fully alleviated by de-duplication alone as oth
     \centering
 %\quad
   \subfloat[\label{fig:whitebox-workflow}Train time: multiple captions]{%
-       \includegraphics[height = 3.8cm]{figures/caption-modification_training.PNG}}
+       \includegraphics[height = 3.8cm]{caption-modification_training.PNG}}
     \hfill
   \subfloat[\label{fig:blackbox-workflow}Inference time: random token replacement / addition]{%
-        \includegraphics[height = 3.8cm]{figures/caption-modification_inference.PNG}}
+        \includegraphics[height = 3.8cm]{caption-modification_inference.PNG}}
     %\quad
     \caption{\textbf{Caption modification}: The most successful mitigation strategies in~\cite{somepalli_understanding_2023} against replication in Stable Diffusion: (a) \textit{multiple captions} for train time and (b) \textit{random token / number addition} for inference time. The top row represents train samples, the middle row is the memorised image, and the bottom row is the generation with a mitigation strategy applied.}
     \label{fig:caption-modification}
@@ -489,7 +473,7 @@ A challenge of prompt modifying techniques is dealing with unseen malicious cont
 \subsubsection{Adversarial perturbations}\label{sec:mitigation-adversarial}
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/glaze.PNG}
+    \includegraphics[width=0.9\textwidth]{glaze.PNG}
     \caption{\textbf{Cloaking} via Glaze~\cite{shan_glaze_2023}: columns 1-2 show original artwork from three artists; column 3 depicts results from style mimicry using Stable Diffusion; column 4 is the representation of the target, "cloak" style; columns 5-6 are (failed) attempts of style mimicry based on the cloaked artwork.}
     \label{fig:cloaking}
 \end{figure*}
@@ -527,7 +511,6 @@ Nightshade~\cite{shan_prompt-specific_2023} takes a step further into degrading 
 The authors first demonstrate that despite the massive datasets used in training diffusion models, these are vulnerable to poisoning attacks targeting specific prompts. 
 Based on this observation, Nightshade uses a small number of perceptually identical poison samples to corrupt the response of a model to specific prompts. 
 The protection method shows large effects on related concepts and hence destabilises general features in the model, affecting its overall image generation ability.
-Cross-Attention ATtack (CAAT)~\cite{xu_perturbing_2024} is a method for creating the adversarial samples by adding minimal perturbations to original image samples while updating only the parameters of the cross-attention layers disrupting this way the text-to-image mappings.   
 
 Anti-DreamBooth~\cite{van_le_anti-dreambooth_2023} and MetaCloak~\cite{liu_metacloak_2024} are black-box approaches based on training surrogate models to optimise the perturbations, where the objective is to force the target model to overfit on these perturbations in the fine-tuning stage. These methods are designed specifically for the unauthorised CT2I scenario.
 
@@ -546,7 +529,7 @@ EditShield~\cite{chen_editshield_2023} employs an encoder attack (c.f. Photoguar
 Instead, the approach is to maximise the distance of the perturbed representation from the original representation while constraining the amount of perturbations to keep them visually imperceptible. 
 They further introduce a method for finding universal perturbations for unauthorised image editing that can be applied to protect a large number of images, without having to find optimal perturbations for each image. 
 
-\input{tables/adversarial-perturbations}
+\input{adversarial-perturbations}
 
 Adversarial perturbation-based methods and their key properties are compared in \Cref{tab:adversarial-perturbations}. 
 We outline the \textit{method target}, i.e. the sub-process of a generative model that the adversarial modifications affect.
@@ -572,13 +555,13 @@ As discussed in \cite{salman_raising_2023}, one instance of such collaboration m
     \centering
     \hspace*{\fill}
     \subfloat[\label{fig:erasing-concepts:nudity}Erasing Nudity]{%
-        \includegraphics[width = .25\linewidth]{figures/erasing-concepts_a.png}}
+        \includegraphics[width = .25\linewidth]{erasing-concepts_a.png}}
     \hfill
     \subfloat[\label{fig:erasing-concepts:van-gogh}Erasing Artistic Sytle]{%
-        \includegraphics[width = .25\linewidth]{figures/erasing-concepts_b.png}}
+        \includegraphics[width = .25\linewidth]{erasing-concepts_b.png}}
     \hfill
     \subfloat[\label{fig:erasing-concepts:car}Erasing Objects]{%
-        \includegraphics[width = .25\linewidth]{figures/erasing-concepts_c.png}}
+        \includegraphics[width = .25\linewidth]{erasing-concepts_c.png}}
     \hspace*{\fill}
     
     \caption{\textbf{Concept removal}: images generated without and with \textit{erasing concepts} method~\cite{gandikota_erasing_2023}.}
@@ -587,7 +570,7 @@ As discussed in \cite{salman_raising_2023}, one instance of such collaboration m
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\linewidth]{figures/ablating-concepts_vertical.png}
+    \includegraphics[width=0.8\linewidth]{ablating-concepts_vertical.png}
     \caption{\textbf{Concept removal}: images generated without and with applying \textit{concept ablation}~\cite{kumari_ablating_2023}.}
     \label{fig:ablation}
 \end{figure}
@@ -605,9 +588,8 @@ SLD is a seminal work for many later concept removal techniques that specificall
 
 Many concept removal methods for pre-trained models use fine-tuning to remove the target concept permanently from the model by modifying its weights while minimising the effects on other concepts.
 In \cite{gandikota_erasing_2023}, \textit{erasing concepts} is based on the observation that cross-attention modules serve for text conditioning in text-to-image models (as opposed to self-attention modules that activate regardless of the text conditioning), therefore by fine-tuning these parameters the connection between text prompts and the output images can be removed. 
-\Cref{fig:erasing-concepts} shows how this method can be adapted to remove harmful concepts or unwanted objects and mitigate style mimicry attacks.
+\Cref{fig:erasing-concepts} shows how this method can be scaled to remove harmful concepts or unwanted objects and mitigate style mimicry attacks.
 Unified concept editing (UCE)~\cite{gandikota_unified_2024} is a generalised method from the same group of authors, where they combine approaches to mitigate style mimicry, bias and offensive content by concept erasure, while only causing minor effects on other concepts.   
-MAss Concept Erasure (MACE)~\cite{lu_mace_2024} scales concept erasure to manage to remove up to 100 concepts simultaneously. This is achieved by introducing a closed-form cross-attention refinement which is a way to mathematically adjust the cross-attention layers to remove information related to undesirable concepts and integrating multiple LoRA modules each concept to eliminate their specific intrinsic information. 
 
 Other fine-tuning-based approaches~\cite{kumari_ablating_2023,zhang_forget-me-not_2023} propose \textit{concept ablation} resp. \textit{concept unlearning} by directing the unwanted samples towards a more general concept.
 These methods require additional input from the user, namely the description of a generalised concept in relation to the target concept - the \textit{anchor concept}. 
@@ -622,11 +604,11 @@ Unlearning techniques for LLMs include algorithms for approximating the removal 
 Two objectives are usually addressed in LLM unlearning~\cite{liu_rethinking_2024} - \textit{model capability removal}, mostly relevant for achieving privacy and safety~\cite{jang_knowledge_2022,wu_depn_2023,lu_quark_2022}, and \textit{data influence removal}, crucial for intellectual property protection.
 One such data influence removal approach demonstrates a case study using "Harry Potter" as a targeted content~\cite{eldan_whos_2023}. 
 It proposes generating generic predictions to replace specific content, thereby removing the memory of the targeted information while preserving its general performance. 
-% There are two main requirements for concept removal techniques; (i) Generality requires that a concept should be consistently removed, regardless of its expression and the context in which it appears. On the other hand, specificity requires maintaining unrelated concepts unaffected.
+
 \subsubsection{Watermarking \& ownership verification} \label{sec:mitigation-watermarking}
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/watermarking-stages.PNG}
+    \includegraphics[width=\linewidth]{watermarking-stages.PNG}
     \caption{The two stages of forensic watermarking~\cite{cui_diffusionshield_2023}.}
     \label{fig:watermarking-stages}
 \end{figure}
@@ -661,8 +643,7 @@ This is done such that two models are trained, a clean model on a clean image se
 These two models are then used to synthesise image sets for fine-tuning the detector.
 
 Similarly, concept watermarking~\cite{feng_catch_2023} is proposed with the idea of jointly training a watermark encoder and watermark decoder to embed a watermark into a specific concept. 
-This method is evaluated specifically for a textual inversion scenario, i.e. subject-driven fine-tuning, hence the watermark is directed towards the introduced word.  
-While this method serves a purposed of owner tracing, concept watermarking may also be used for concept attribution~\cite{asnani_promark_2024}. This is a type of proactive data attribution where the presence of a watermark in the generated content indicate the most influential training samples which are a part of a concept. The training data is watermarked by a concept watermark prior to the model training according to the concept they belong to and carry that information to the generated data. 
+This method is evaluated specifically for a textual inversion scenario, i.e. subject-driven fine-tuning, hence the watermark is directed towards the introduced word.   
 
 FT-Shield~\cite{cui_ft-shield_2023} is a method designed for fine-tuning text-to-image diffusion models. 
 The perturbations that represent a watermark are optimised such that they are learned by the diffusion model before other features such as style.
@@ -683,13 +664,9 @@ After editing, the watermark can be extracted by calculating a pixel-wise differ
 TimbreWatermarking~\cite{liu_detecting_2024} is a method for watermarking against unauthorised audio synthesis. 
 It embeds a watermark in the frequency domain that aims to be detectable after voice cloning attempts.
 
-\begin{figure*}[ht]
-    \centering
-    \includegraphics[width=.9\linewidth]{figures/attribution.PNG}
-    \caption{Attribution by Customisation (AbC)~\cite{wang_evaluating_2023}.}
-    \label{fig:attribution}
-\end{figure*}
+
 \subsubsection{Detection and attribution}\label{sec:mitigation-detection}
+
 To provide the artists with an efficient and rather simple way to make initial steps in protecting their art, efforts have been put into developing tools where artists can verify whether their art is part of large datasets and, consequently, a part of training sets for generative models, i.e. the \textit{detection of participation}. 
 One such solution is the project \textit{Have I been trained?}\footnote{\url{https://haveibeentrained.com/}} by the company \textit{Spawning}\footnote{\url{https://www.spawning.ai}}. 
 The tool relies on Contrastive Language-Image Pre-Training (CLIP) retrieval to enable artists to search the LAION-5B and LAION-400M datasets, which are used to train Stable Diffusion and Midjourney models. 
@@ -707,20 +684,17 @@ In this context, it can serve as evidence to the copyright owner that their data
 
 \begin{figure*}
     \centering
-    \includegraphics[width=.9\linewidth]{figures/TRAK.PNG}
-    \caption{TRAK framework for data attribution~\cite{georgiev_journey_2023}.}
-    \label{fig:trak}
+    \includegraphics[width=.9\linewidth]{attribution.PNG}
+    \caption{Attribution by Customisation (AbC)~\cite{wang_evaluating_2023}.}
+    \label{fig:attribution}
 \end{figure*}
+
 When it comes to attribution in the more general but complex scenario where the generated sample is influenced by multiple training samples, Wang et al.~\cite{wang_evaluating_2023} take a leap towards understanding the influences of an individual image in the generative process. 
 Drawing from the observations that the main challenge in attributing generated images to specific training samples is the lack of ground truth for this task, the key idea is to simulate ground truth directly by adding exemplar influences, as illustrated in \Cref{fig:attribution}.
 Wang et al. use textual inversion to customise images, thus creating a set of synthesised images influenced by their corresponding exemplar image. 
 Using the dataset, the method tunes the retrieval feature spaces CLIP~\cite{pizzi_self-supervised_2022}, DINO~\cite{caron_emerging_2021}, ViT~\cite{dosovitskiy_image_2021}, ALADIN~\cite{ruta_aladin_2021}, SSCD~\cite{pizzi_self-supervised_2022} via contrastive learning~\cite{oord_representation_2019} to obtain attribution scores representing the influence of multiple candidate images on the generated image.
 In \cite{dai_training_2023} the authors introduce the \textit{encoded ensemble} method that enables the identification of influential training examples by leveraging ensemble training on carefully engineered splits of the training data. 
 The main limitation of this method is its computational expansiveness as it requires training ensembles of 10-50 diffusion models.
-Most recently, Georgiev et al. introduce TRAK (Tracing with the Randomly-projected After Kernel)~\cite{park_trak_2023}, a framework for data attribution for large-scale models and apply it to diffusion models (DDPMs and LDMs)~\cite{georgiev_journey_2023}.
-Unlike the previous methods, TRAK attributes the positive and negative influence of training data samples at \textit{each step} of the diffusion process, rather than only the final generated image. 
-Because of its iterative nature, the framework contributes to interpretability of the generation process -- for instance, the visual analysis in \Cref{fig:trak} shows that positive influencers tend to resemble the generated image while negative influencers differ in specific attributes but generally evolve to resemble the generated image as well.
-%   Introduces metrics for evaluating attributions based on their counterfactual impact on the distribution of generated images.
 
 \subsection{Policy, ethical usage and recommendations}\label{sec:mitigation-ethical}
 Several sophisticated models are already trained on a large corpus of data scraped from different sources, such as portfolio sites for artists (Pinterest, ArtStation) and shopping sites (Fine Art America), without the artists' consent for their art being used as training data.
@@ -741,8 +715,6 @@ To address more general ethical considerations surrounding GAI, Knott et al.~\ci
 Furthermore, the \textit{Content Authenticity Initiative}\footnote{\url{https://contentauthenticity.org}} is developing an open standard and provenance tool that would prove the authenticity of digital content via watermarking. 
 It promotes trustworthiness and transparency by helping fight disinformation as well as protecting the IP rights of digital content creators.
 
-
-% ethical development
 A responsible act from the perspective of model development is taking into account the concerns of memorisation and assessing the necessity of further actions (e.g., applying techniques from \Cref{sec:mitigation}) before deploying the model.
 It is generally a good recommendation to test the model's generalisation ability, however, this is not a good enough indicator of whether the model still memorises the training data. 
 Carlini et al. \cite{carlini_secret_2019} propose a strategy for testing the model memorisation already at training time. 
@@ -762,7 +734,6 @@ In this section, we first discuss works addressing other ethical issues in GAI t
 Secondly, we discuss the general challenges of the proposed methods for IP protection we presented in \Cref{sec:mitigation}.
 
 \subsection{IP protection vs. other ethical questions in GAI}
-% Harmful content
 Concept removal~\cite{liu_geom-erasing_2023,ho_classifier-free_2022} and unlearning~\cite{wu_erasediff_2024} are examples of the methods addressing harmful content generation -- in fact, they were originally designed for this purpose, and later also evaluated on IP protection scenarios.
 Hence, we discussed concept removal methods in the light of protection against style mimicry in \Cref{sec:mitigation-concept}. 
 
@@ -770,20 +741,15 @@ Methods initially designed for harmful content protection that have not yet been
 Furthermore, harmful content is addressed via detection~\cite{rando_red-teaming_2022} and prompt-modifying methods~\cite{hanu_detoxify_2020} based on safety checkers filtering the harmful content. 
 These could also be extended to IP protection scenarios by detecting and filtering keywords that lead to potential copyright violations (e.g. names of the artists)~\cite{noauthor_openai_2023}.
 
-% Privacy  
 Similarly, there are notable cloaking methods~\cite{wu_towards_2023} designed for protecting privacy against human face generation via DMs that do not explicitly evaluate their utility for the IP protection scenario, but are a valuable motivation for the methods in \Cref{sec:mitigation-adversarial}.
 
-% Deepfake prevention
 Protection against deepfake generation shares similarities to the works in IP protection. 
 They use the same underlying methods (adversarial perturbations, watermarking), but address different scenarios.
 For instance, methods that proactively counter deepfakes majorly rely on adversarial perturbations, similar to cloaking methods. 
 These perturbations are optimised to disrupt the deepfake generation by causing the low quality of generated content or nullifying the functionality~\cite{ruiz_disrupting_2020,dong_restricted_2023,ruiz_practical_2023}. 
-% Deepfake detection (detection of generated content)
 On the other hand, deepfake watermarking methods do not prevent, but rather detect the deepfakes~\cite{wang_faketagger_2021,wu_sepmark_2023}. 
 This scenario can be compared with watermarking for IP protection~\cite{lederer_identifying_2023} as they share the objective of embedding a verifiable watermark in the generated content.
 
-
-% Deepfake detection (detection of generated content)
 Detection of AI-generated content (not only deepfakes), e.g. text~\cite{tang_science_2024} and images~\cite{liu_detecting_2022}, plays an indirect role in intellectual property protection as well, especially when it comes to creative works. 
 Current detection techniques for AI-generated text, however, struggle with reliability due to high false negative rates~\cite{sadasivan_can_2024,weber-wulff_testing_2023}. 
 Moreover, the effectiveness significantly decreases when faced with machine translation and obfuscation techniques.
@@ -791,8 +757,6 @@ Similarly, for images, reactive detection techniques relying on statistical arte
 For image data, preemptive watermarking techniques are designed to embed a signal into the content to later be detected as generated content~\cite{zhu_hidden_2018,zhang_udh_2020}, or further, attributed to a specific generative model\footnote{\url{https://deepmind.google/technologies/synthid/}}.
 These techniques have also shown to be insufficiently robust against minor perturbations~\cite{jiang_evading_2023}.
 
-
-% IP of AIGC
 The ownership over AI-generated content is another ethical question that is heavily discussed at the moment and there is no clear consensus on who and if anyone should own the AI-generated content. 
 Large training data including valuable content such as artwork, articles etc. is a crucial part of GAI capabilities, hence one view is that the artists and authors should be compensated or credited for the usage of their content~\cite{lnu_artists_2023}. 
 Being able to credit the artists sparked the research and development of attribution methods, which could provide the original content owners with the appropriate acknowledgement and/or compensation; however, to this date, these attribution methods are not advanced enough to reliably detect the exact training sample contributing to the output of complex generative AI models, as discussed in \Cref{sec:mitigation-detection}. 
@@ -843,8 +807,7 @@ While this paper contributes to the understanding of technical IP protection met
 \balance
 
 \bibliographystyle{ieeetr}
-\bibliography{references-Tanja-workingVersion}  
-%\bibliography{references-Rudi-workingVersion}  
-%\bibliography{references}  
+\bibliography{references}  
 
 \end{document}
+\typeout{get arXiv to do 4 passes: Label(s) may have changed. Rerun}
