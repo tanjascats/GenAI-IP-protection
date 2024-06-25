@@ -15,7 +15,7 @@ This repository contains a collection of methods for intellectual property prote
 ## 1. Training data sanitisation 
 * [2021] Lee et al. **Deduplicating Training Data Makes Language Models Better** [[paper](https://arxiv.org/abs/2107.06499)][[code](https://github.com/google-research/deduplicate-text-datasets)]
 
-## 1. Adversarial modifications
+## 2. Adversarial modifications
 * [2020]	Shan et al.	**Fawkes: Protecting Privacy against Unauthorized Deep Learning Models.** _USENIX 2020_. [[paper](https://www.usenix.org/conference/usenixsecurity20/presentation/shan)]
 * [2023]	Shan et al. **Glaze: Protecting Artists from Style Mimicry by Text-to-Image Models** _USENIX 2023_ [[paper](http://arxiv.org/abs/2302.04222)]  
 * [2023]	Salman et al.	**Photoguard: Raising the Cost of Malicious AI-Powered Image Editing** [[paper](http://arxiv.org/abs/2302.06588)] [[code](https://github.com/MadryLab/photoguard)]
@@ -29,7 +29,7 @@ This repository contains a collection of methods for intellectual property prote
 * [2023]	Liang et al. **Mist: Towards Improved Adversarial Examples for Diffusion Models** [[paper](http://arxiv.org/abs/2305.12683)] [[code](https://github.com/psyker-team/mist)]
 * [2024] Li et al. **Neural Style Protection: Counteracting Unauthorized Neural Style Transfer.** [[paper](https://openaccess.thecvf.com/content/WACV2024/html/Li_Neural_Style_Protection_Counteracting_Unauthorized_Neural_Style_Transfer_WACV_2024_paper.html)]
 
-## 2. Concept removal
+## 3. Concept removal
 * [2023] Gandikota et al. **Erasing Concepts from Diffusion Models** _ICCV 2023_ [[paper](https://arxiv.org/pdf/2303.07345)] [[code](https://erasing.baulab.info/)]
 * [2023] Dong et al. **Towards Test-Time Refusals via Concept Negation** _NeurIPS 2023_ [[paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/54801e196796134a2b0ae5e8adef502f-Abstract-Conference.html)]
 * [2023] Kong et al. **Data Redaction from Pre-trained GANs** _SaTML 2023_ [[paper](https://ieeexplore.ieee.org/abstract/document/10136171)]
@@ -39,7 +39,7 @@ This repository contains a collection of methods for intellectual property prote
 * [2024] Zhao et al. **Separable Multi-Concept Erasure from Diffusion Models** [[paper](https://arxiv.org/pdf/2402.05947)][[code](https://github.com/Dlut-lab-zmn/SRS-ME)]
 * [2024] Zhang et al. **Forget-Me-Not: Learning to Forget in Text-to-Image Diffusion Models** _CVPR 2024_ [[paper](https://openaccess.thecvf.com/content/CVPR2024W/MMFM/html/Zhang_Forget-Me-Not_Learning_to_Forget_in_Text-to-Image_Diffusion_Models_CVPRW_2024_paper.html)] [[code](https://github.com/SHI-Labs/Forget-Me-Not)]
 
-## 3. Watermarking
+## 4. Watermarking
 * [2023] Cui et al. **FT-SHIELD: A Watermark Against Unauthorised Fine-Tuning in Text-to-Image Diffusion Models** [[paper](https://arxiv.org/abs/2310.02401)]
 * [2023] Cui et al. **DiffusionShield: A Watermark for Data Copyright Protection Against Generative Diffusione Models** [[paper](https://arxiv.org/abs/2306.04642)][[code](https://github.com/Yingqiancui/DiffusionShield)]
 * [2023] Feng et al. **Catch You Everything Everywhere: Guarding Textual Inversion via Concept Watermark** [[paper](https://arxiv.org/abs/2309.05940)]
@@ -48,7 +48,7 @@ This repository contains a collection of methods for intellectual property prote
 * [2024] Roman et al. **AudioSeal: Proactive Detection of Voice Cloning with Localized Watermarking** [[paper](https://hal.science/hal-04610152/)] [[code](https://github.com/facebookresearch/audioseal)]
 * [2023] Tan et al. **A Somewhat Robust Image Watermark against Diffusion-based Editing Models** [[paper](https://arxiv.org/abs/2311.13713)][[code](https://github.com/BennyTMT/RIW)]
   
-## 4. Data attribution 
+## 5. Data attribution 
 * [2023] Georgiev et al. **The Journey, Not the Destination: How Data Guides Diffusion Models** [[paper](https://arxiv.org/abs/2312.06205)] [[code](https://github.com/MadryLab/journey-TRAK)] 
 * [2023] Dai and Gifford **Training Data Attribution for Diffusion Models** [[paper](https://arxiv.org/abs/2306.02174)] [[code](https://github.com/zheng-dai/GenEns)]
 * [2023] Somepalli et al. **Diffusion Art or Digital Forgery? Investigating Data Replication in Diffusion Models** _CVPR 2023_ [[paper](https://openaccess.thecvf.com/content/CVPR2023/html/Somepalli_Diffusion_Art_or_Digital_Forgery_Investigating_Data_Replication_in_Diffusion_CVPR_2023_paper.html)] [[code](https://github.com/somepago/DCR)]
