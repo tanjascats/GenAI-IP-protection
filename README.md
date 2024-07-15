@@ -55,6 +55,11 @@ This repository contains a collection of methods for intellectual property prote
 * [2023] Wang et al. **Evaluating Data Attribution for Text-to-Image Models** _ICCV 2023_ [[paper](https://openaccess.thecvf.com/content/ICCV2023/html/Wang_Evaluating_Data_Attribution_for_Text-to-Image_Models_ICCV_2023_paper.html)][[code](https://github.com/peterwang512/GenDataAttribution)]
 * [2023] Zhang et al. **EditGuard: Versatile Image Watermarking for Tamper Localization and Copyright Protection.** _CVPR 2024_ [[paper](http://arxiv.org/abs/2312.08883)][[code](https://github.com/xuanyuzhang21/EditGuard)][[project](https://xuanyuzhang21.github.io/project/editguard/)]
 
+## :sparkles: New (to be categorised) 
+* [2024] Pontorno et al. **DeepFeatureX Net: Deep Features eXtractors based Network for discriminating synthetic from real images.** [[paper](https://arxiv.org/abs/2404.15697)][[code](https://github.com/opontorno/block-based_deepfake-detection)]
+* [2024] Li et al. **Mitigate Replication and Copying in Diffusion Models with Generalized Caption and Dual Fusion Enhancement.** [[paper](https://arxiv.org/pdf/2309.07254)][[code](https://github.com/HowardLi0816/dual-fusion-diffusion)]
+* [2024] Leotta et al. **Not with my name! Inferring artists' names of input strings employed by Diffusion Models.** [[paper](https://arxiv.org/abs/2307.13527)][[code](https://github.com/ictlab-unict/not-with-my-name)]
+* [2024] Duarte et al. **DE-COP: Detecting Copyrighted Content in Language Models Training Data.** [[paper](https://arxiv.org/abs/2402.09910)][[code](https://github.com/LeiLiLab/DE-COP)]
 --- 
 
 ## Cite
